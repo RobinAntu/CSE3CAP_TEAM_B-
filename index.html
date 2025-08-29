@@ -59,14 +59,14 @@
     }
 
     function DashboardPage({ onSettings, onInputWizard, onTask, setPlan, onPlan }) {
+      const db = getStoredData();
+      const tasks = db.tasks || [];
+
       const generate = () => {
         const user = { email: 'john@example.com' };
         const data = {
-          tasks: [
-            { name: 'Research Paper', deadline: '2024-05-15', difficulty: 'hard', weight: 50 },
-            { name: 'Math Quiz', deadline: '2024-05-10', difficulty: 'medium', weight: 10 }
-          ],
-          preferences: {
+          tasks,
+          preferences: db.preferences || {
             availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM']
           }
         };
@@ -81,7 +81,9 @@
           <button id="to-wizard" onClick={onInputWizard}>Input Wizard</button>
           <button id="generate-plan" onClick={generate}>Generate Plan</button>
           <ul>
-            <li><button id="task-1" onClick={onTask}>Complete Research Paper Draft</button></li>
+            {tasks.map((t, i) => (
+              <li key={i}><button id={`task-${i}`} onClick={onTask}>{t.name}</button></li>
+            ))}
           </ul>
         </div>
       );
@@ -119,23 +121,50 @@
 
     function InputWizardPage({ onBack }) {
       const [step, setStep] = useState(1);
+      const [course, setCourse] = useState('');
+      const [credits, setCredits] = useState('');
+      const [midterm, setMidterm] = useState('');
+      const [project, setProject] = useState('');
+      const [grade, setGrade] = useState('A');
+      const [skill, setSkill] = useState('');
+      const [hours, setHours] = useState('');
+      const [timePref, setTimePref] = useState('morning');
+      const [sessionLength, setSessionLength] = useState('60');
+
       const next = () => setStep(s => s + 1);
       const prev = () => setStep(s => s - 1);
+
+      const finish = () => {
+        const tasks = [
+          { name: `${course} Midterm`, deadline: midterm, difficulty: 'medium', weight: 30 },
+          { name: `${course} Final Project`, deadline: project, difficulty: 'hard', weight: 70 }
+        ];
+        const preferences = {
+          grade,
+          skill,
+          hours: Number(hours),
+          preferredTime: timePref,
+          sessionLength: Number(sessionLength),
+          availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM']
+        };
+        saveUserData({ tasks, preferences });
+        onBack();
+      };
 
       const Step1 = () => (
         <div>
           <h3>Course Details & Deadlines</h3>
           <label>Course Name
-            <input id="wizard-course" />
+            <input id="wizard-course" value={course} onChange={e => setCourse(e.target.value)} />
           </label>
           <label>Credits
-            <input id="wizard-credits" type="number" />
+            <input id="wizard-credits" type="number" value={credits} onChange={e => setCredits(e.target.value)} />
           </label>
           <label>Midterm Deadline
-            <input id="wizard-midterm" type="date" />
+            <input id="wizard-midterm" type="date" value={midterm} onChange={e => setMidterm(e.target.value)} />
           </label>
           <label>Final Project Deadline
-            <input id="wizard-project" type="date" />
+            <input id="wizard-project" type="date" value={project} onChange={e => setProject(e.target.value)} />
           </label>
           <button id="wizard-next1" onClick={next}>Next</button>
         </div>
@@ -145,16 +174,16 @@
         <div>
           <h3>Learning Goals & Timetable</h3>
           <label>Target Grade
-            <select id="wizard-grade">
+            <select id="wizard-grade" value={grade} onChange={e => setGrade(e.target.value)}>
               <option value="A">A</option>
               <option value="B">B</option>
             </select>
           </label>
           <label>Skill Acquisition
-            <textarea id="wizard-skill" />
+            <textarea id="wizard-skill" value={skill} onChange={e => setSkill(e.target.value)} />
           </label>
           <label>Weekly Study Hours
-            <input id="wizard-hours" type="number" />
+            <input id="wizard-hours" type="number" value={hours} onChange={e => setHours(e.target.value)} />
           </label>
           <button id="wizard-prev2" onClick={prev}>Previous</button>
           <button id="wizard-next2" onClick={next}>Next</button>
@@ -165,21 +194,21 @@
         <div>
           <h3>Preferences</h3>
           <label>Preferred Study Time
-            <select id="wizard-time">
+            <select id="wizard-time" value={timePref} onChange={e => setTimePref(e.target.value)}>
               <option value="morning">Morning</option>
               <option value="afternoon">Afternoon</option>
               <option value="evening">Evening</option>
             </select>
           </label>
           <label>Session Length
-            <select id="wizard-length">
+            <select id="wizard-length" value={sessionLength} onChange={e => setSessionLength(e.target.value)}>
               <option value="30">30 minutes</option>
               <option value="60">60 minutes</option>
               <option value="90">90 minutes</option>
             </select>
           </label>
           <button id="wizard-prev3" onClick={prev}>Previous</button>
-          <button id="wizard-finish" onClick={onBack}>Finish</button>
+          <button id="wizard-finish" onClick={finish}>Finish</button>
         </div>
       );
 

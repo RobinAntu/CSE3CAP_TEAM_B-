@@ -33,9 +33,12 @@ This currently prints a message indicating there are no tests.
 
 ## Project Structure
 - `index.html` – Contains the entire React SPA using inline scripts.
-- `planner.js` – Demonstrates the planning algorithm pipeline.
+- `planner.js` – Demonstrates the planning algorithm pipeline and persists data with `localStorage`.
 - `package.json` – Basic metadata and placeholder scripts.
-- `style.css` – Global theme styles.
+- `style.css` – Global theme with a professional color palette.
+
+## Data Persistence
+User inputs and generated plans are saved in the browser's `localStorage` so you can revisit and monitor previously entered data.
 
 ## Notes
 This project is a minimal prototype. For a production-ready React app, consider using a build tool like Vite, CRA, or Next.js.

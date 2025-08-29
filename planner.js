@@ -1,4 +1,19 @@
 // Simple study planning pipeline demonstrating backend steps
+// simple localStorage-backed database
+const DB_KEY = 'studyflex-db';
+
+function loadDB() {
+  try {
+    return JSON.parse(localStorage.getItem(DB_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveDB(data) {
+  localStorage.setItem(DB_KEY, JSON.stringify(data));
+}
+
 // Step 1: User Registration & Authentication
 function authenticateUser(user) {
   // demo auth - real app would verify credentials and issue token
@@ -14,7 +29,10 @@ function collectInputs(data) {
 
 // Step 3: Backend Data Management
 function storeData(data) {
-  // here we'd persist to a database; in this prototype we just echo it
+  const db = loadDB();
+  db.tasks = data.tasks;
+  db.preferences = data.preferences;
+  saveDB(db);
   return data;
 }
 
@@ -62,8 +80,14 @@ function orchestratePlan(data) {
 
 // Step 7: Plan Storage & Synchronization
 function savePlan(plan) {
-  // store plan for user; here we simply return it
+  const db = loadDB();
+  db.plan = plan;
+  saveDB(db);
   return plan;
+}
+
+function getStoredData() {
+  return loadDB();
 }
 
 function generatePlan(user, data) {
@@ -76,3 +100,5 @@ function generatePlan(user, data) {
 
 // expose globally for the browser environment
 window.generatePlan = generatePlan;
+window.saveUserData = storeData;
+window.getStoredData = getStoredData;
