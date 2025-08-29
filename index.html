@@ -10,6 +10,7 @@
 </head>
 <body>
   <div id="root"></div>
+  <script type="text/babel" src="planner.js"></script>
   <script type="text/babel">
     const { useState } = React;
 
@@ -58,11 +59,33 @@
     }
 
     function DashboardPage({ onSettings, onInputWizard, onTask }) {
+      const [plan, setPlan] = useState([]);
+
+      const generate = () => {
+        const user = { email: 'john@example.com' };
+        const data = {
+          tasks: [
+            { name: 'Research Paper', deadline: '2024-05-15', difficulty: 'hard', weight: 50 },
+            { name: 'Math Quiz', deadline: '2024-05-10', difficulty: 'medium', weight: 10 }
+          ],
+          preferences: {
+            availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM']
+          }
+        };
+        setPlan(generatePlan(user, data));
+      };
+
       return (
         <div className="page">
           <h2>Dashboard</h2>
           <button id="to-settings" onClick={onSettings}>Settings</button>
           <button id="to-wizard" onClick={onInputWizard}>Input Wizard</button>
+          <button id="generate-plan" onClick={generate}>Generate Plan</button>
+          {plan.length > 0 && (
+            <pre id="plan-output">
+              {plan.map((p, i) => `${i + 1}. ${p.task} -> ${p.slot}`).join('\n')}
+            </pre>
+          )}
           <ul>
             <li><button id="task-1" onClick={onTask}>Complete Research Paper Draft</button></li>
           </ul>

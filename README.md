@@ -33,7 +33,22 @@ This currently prints a message indicating there are no tests.
 
 ## Project Structure
 - `index.html` – Contains the entire React SPA using inline scripts.
+- `planner.js` – Demonstrates the planning algorithm pipeline.
 - `package.json` – Basic metadata and placeholder scripts.
+- `style.css` – Global theme styles.
 
 ## Notes
 This project is a minimal prototype. For a production-ready React app, consider using a build tool like Vite, CRA, or Next.js.
+
+## Planning Algorithm Overview
+The prototype includes a simple algorithm (`planner.js`) that mirrors the backend steps of a future planner service:
+
+1. **User Registration & Authentication** – validates user credentials and issues a session token.
+2. **Input Collection** – gathers courses, deadlines, and user preferences.
+3. **Backend Data Management** – stores structured tasks and preferences.
+4. **Job Orchestration** – triggers plan generation independently of the UI.
+5. **AI/ML Models** – estimates study hours and assigns priority scores.
+6. **Scheduling Optimizer** – builds a weekly plan from estimates, priorities, and availability.
+7. **Plan Storage & Synchronization** – saves the plan and exposes it to the dashboard for display.
+
+On the dashboard, clicking **Generate Plan** runs this pipeline with sample data and renders the resulting weekly schedule.
