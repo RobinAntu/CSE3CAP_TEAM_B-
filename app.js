@@ -1,0 +1,310 @@
+const { useState } = React;
+
+function AuthCard({ title, children, footer }) {
+  return (
+    <div className="auth-card">
+      <h2>{title}</h2>
+      {children}
+      {footer && <div className="auth-footer">{footer}</div>}
+    </div>
+  );
+}
+
+function LoginPage({ onSignup, onLogin }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  return (
+    <AuthCard
+      title="Welcome Back"
+      footer={
+        <>Don't have an account? <button id="show-signup" onClick={onSignup}>Sign up</button></>
+      }
+    >
+      <label>Email
+        <input id="login-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+      </label>
+      <label>Password
+        <input id="login-password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      </label>
+      <button id="login-button" onClick={onLogin}>Login</button>
+    </AuthCard>
+  );
+}
+
+function SignupPage({ onLogin, onSignupComplete }) {
+  const [first, setFirst] = useState('');
+  const [last, setLast] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  return (
+    <AuthCard
+      title="Sign up"
+      footer={
+        <>Already have an account? <button id="show-login" onClick={onLogin}>Log in</button></>
+      }
+    >
+      <label>First name
+        <input id="signup-first" value={first} onChange={e => setFirst(e.target.value)} />
+      </label>
+      <label>Last name
+        <input id="signup-last" value={last} onChange={e => setLast(e.target.value)} />
+      </label>
+      <label>Email
+        <input id="signup-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+      </label>
+      <label>Password
+        <input id="signup-password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      </label>
+      <button id="signup-button" onClick={onSignupComplete}>Sign up</button>
+    </AuthCard>
+  );
+}
+
+function Sidebar({ setPage }) {
+  return (
+    <aside className="sidebar">
+      <div className="logo">Study Flex</div>
+      <nav>
+        <button id="nav-home" onClick={() => setPage('dashboard')}>Home</button>
+        <button id="nav-schedule" onClick={() => setPage('plan')}>Schedule</button>
+        <button id="nav-wizard" onClick={() => setPage('wizard')}>Input Wizard</button>
+        <button id="nav-settings" onClick={() => setPage('settings')}>Settings</button>
+      </nav>
+    </aside>
+  );
+}
+
+function Shell({ children, setPage }) {
+  return (
+    <div className="shell">
+      <Sidebar setPage={setPage} />
+      <main className="main">{children}</main>
+    </div>
+  );
+}
+
+function DashboardPage({ generatePlan, onTask }) {
+  const db = getStoredData();
+  const plan = db.plan || [];
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const dayMap = Object.fromEntries(days.map(d => [d, []]));
+  plan.forEach(p => {
+    const day = p.slot.split(' ')[0];
+    if (dayMap[day]) dayMap[day].push(p.task);
+  });
+
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <h3>Weekly Overview</h3>
+      <table className="plan-table">
+        <thead>
+          <tr>{days.map(d => <th key={d}>{d}</th>)}</tr>
+        </thead>
+        <tbody>
+          <tr>
+            {days.map(d => (
+              <td key={d}>{dayMap[d].map((t,i) => <div key={i}>{t}</div>)}</td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+      <div className="dash-actions">
+        <button id="generate-plan" onClick={generatePlan}>Sync Plan</button>
+        <button id="view-task" onClick={onTask}>View Task Details</button>
+      </div>
+    </div>
+  );
+}
+
+function SettingsPage({ onBack }) {
+  const [email, setEmail] = useState('john.doe@example.com');
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [emails, setEmails] = useState(true);
+  return (
+    <div>
+      <h2>Settings</h2>
+      <label>Email Address
+        <input id="settings-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+      </label>
+      <label>Current Password
+        <input id="settings-current" type="password" value={current} onChange={e => setCurrent(e.target.value)} />
+      </label>
+      <label>New Password
+        <input id="settings-new" type="password" value={next} onChange={e => setNext(e.target.value)} />
+      </label>
+      <label>Confirm New Password
+        <input id="settings-confirm" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} />
+      </label>
+      <label className="checkbox">
+        <input id="settings-emails" type="checkbox" checked={emails} onChange={e => setEmails(e.target.checked)} />
+        Receive email notifications
+      </label>
+      <button id="settings-back" onClick={onBack}>Save Changes</button>
+    </div>
+  );
+}
+
+function InputWizardPage({ onBack }) {
+  const [step, setStep] = useState(1);
+  const [course, setCourse] = useState('');
+  const [credits, setCredits] = useState('');
+  const [midterm, setMidterm] = useState('');
+  const [project, setProject] = useState('');
+  const [grade, setGrade] = useState('A');
+  const [skill, setSkill] = useState('');
+  const [hours, setHours] = useState('');
+  const [timePref, setTimePref] = useState('morning');
+  const [sessionLength, setSessionLength] = useState('60');
+
+  const next = () => setStep(s => s + 1);
+  const prev = () => setStep(s => s - 1);
+
+  const finish = () => {
+    const tasks = [
+      { name: `${course} Midterm`, deadline: midterm, difficulty: 'medium', weight: 30 },
+      { name: `${course} Final Project`, deadline: project, difficulty: 'hard', weight: 70 }
+    ];
+    const preferences = {
+      grade,
+      skill,
+      hours: Number(hours),
+      preferredTime: timePref,
+      sessionLength: Number(sessionLength),
+      availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM']
+    };
+    saveUserData({ tasks, preferences });
+    onBack();
+  };
+
+  const Step1 = () => (
+    <div>
+      <h3>Course Details & Deadlines</h3>
+      <label>Course Name
+        <input id="wizard-course" value={course} onChange={e => setCourse(e.target.value)} />
+      </label>
+      <label>Credits
+        <input id="wizard-credits" type="number" value={credits} onChange={e => setCredits(e.target.value)} />
+      </label>
+      <label>Midterm Deadline
+        <input id="wizard-midterm" type="date" value={midterm} onChange={e => setMidterm(e.target.value)} />
+      </label>
+      <label>Final Project Deadline
+        <input id="wizard-project" type="date" value={project} onChange={e => setProject(e.target.value)} />
+      </label>
+      <button id="wizard-next1" onClick={next}>Next</button>
+    </div>
+  );
+
+  const Step2 = () => (
+    <div>
+      <h3>Learning Goals & Timetable</h3>
+      <label>Target Grade
+        <select id="wizard-grade" value={grade} onChange={e => setGrade(e.target.value)}>
+          <option value="A">A</option>
+          <option value="B">B</option>
+        </select>
+      </label>
+      <label>Skill Acquisition
+        <textarea id="wizard-skill" value={skill} onChange={e => setSkill(e.target.value)} />
+      </label>
+      <label>Weekly Study Hours
+        <input id="wizard-hours" type="number" value={hours} onChange={e => setHours(e.target.value)} />
+      </label>
+      <button id="wizard-prev2" onClick={prev}>Previous</button>
+      <button id="wizard-next2" onClick={next}>Next</button>
+    </div>
+  );
+
+  const Step3 = () => (
+    <div>
+      <h3>Preferences</h3>
+      <label>Preferred Study Time
+        <select id="wizard-time" value={timePref} onChange={e => setTimePref(e.target.value)}>
+          <option value="morning">Morning</option>
+          <option value="afternoon">Afternoon</option>
+          <option value="evening">Evening</option>
+        </select>
+      </label>
+      <label>Session Length
+        <select id="wizard-length" value={sessionLength} onChange={e => setSessionLength(e.target.value)}>
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+          <option value="90">90 minutes</option>
+        </select>
+      </label>
+      <button id="wizard-prev3" onClick={prev}>Previous</button>
+      <button id="wizard-finish" onClick={finish}>Finish</button>
+    </div>
+  );
+
+  return (
+    <div>
+      <h2>Input Wizard</h2>
+      {step === 1 && <Step1 />}
+      {step === 2 && <Step2 />}
+      {step === 3 && <Step3 />}
+    </div>
+  );
+}
+
+function TaskDetailPage({ onBack }) {
+  return (
+    <div>
+      <h2>Complete Research Paper Draft</h2>
+      <p>Deadline: May 15, 2024</p>
+      <p>AI Prediction: High chance of being delayed.</p>
+      <button id="task-back" onClick={onBack}>Back to Dashboard</button>
+    </div>
+  );
+}
+
+function PlanPage({ plan, onBack }) {
+  return (
+    <div>
+      <h2>Your Study Plan</h2>
+      <ul id="plan-list">
+        {plan.map((p, i) => (
+          <li key={i}>{p.task} – {p.slot}</li>
+        ))}
+      </ul>
+      <button id="plan-back" onClick={onBack}>Back to Dashboard</button>
+    </div>
+  );
+}
+
+function App() {
+  const [page, setPage] = useState('login');
+  const [plan, setPlan] = useState([]);
+
+  const generatePlanAndShow = () => {
+    const db = getStoredData();
+    const tasks = db.tasks || [];
+    const user = { email: 'john@example.com' };
+    const data = {
+      tasks,
+      preferences: db.preferences || {
+        availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM']
+      }
+    };
+    setPlan(generatePlan(user, data));
+    setPage('plan');
+  };
+
+  if (page === 'login') return <LoginPage onSignup={() => setPage('signup')} onLogin={() => setPage('dashboard')} />;
+  if (page === 'signup') return <SignupPage onLogin={() => setPage('login')} onSignupComplete={() => setPage('dashboard')} />;
+
+  return (
+    <Shell setPage={setPage}>
+      {page === 'dashboard' && <DashboardPage generatePlan={generatePlanAndShow} onTask={() => setPage('task')} />}
+      {page === 'wizard' && <InputWizardPage onBack={() => setPage('dashboard')} />}
+      {page === 'settings' && <SettingsPage onBack={() => setPage('dashboard')} />}
+      {page === 'task' && <TaskDetailPage onBack={() => setPage('dashboard')} />}
+      {page === 'plan' && <PlanPage plan={plan} onBack={() => setPage('dashboard')} />}
+    </Shell>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
