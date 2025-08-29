@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Flex - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <div class="sidebar w-64 h-screen bg-gray-100 p-4 fixed">
+        <div>
+            <img src="https://via.placeholder.com/50" alt="Study Flex Logo" class="mb-4">
+            <h2 class="text-xl font-bold text-blue-600">Study Flex</h2>
+            <ul class="mt-6">
+                <li class="mb-2"><a href="dashboard.html" class="text-gray-600 hover:text-blue-600">Dashboard</a></li>
+                <li class="mb-2"><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li class="mb-2"><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li class="mb-2"><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content ml-64 p-6">
+        <nav class="bg-white p-4 shadow">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                <li><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+                <li class="ml-auto"><input type="text" placeholder="Search..." class="border p-2 rounded"></li>
+            </ul>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <section class="mt-10">
+            <h2 class="text-2xl font-bold">Dashboard</h2>
+            <h3 class="text-lg mt-4">Weekly Overview</h3>
+            <div class="grid grid-cols-7 gap-2 mt-2">
+                <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                <div><span class="text-red-600">Submit Mar</span> BUSN 301</div>
+                <div><span class="text-green-600">Attend Lab</span> CHEM 101</div>
+                <div><span class="text-red-600">Draft Essay</span> ENGL 102</div>
+                <div><span class="text-green-600">Practice Prc</span> MATH 150</div>
+                <div><span class="text-red-600">Research Pj</span> BIOL 210</div>
+                <div><span class="text-red-600">Study for M</span> PSYCH 205</div>
+                <div><span class="text-green-600">Relax and R</span> Self-Care</div>
+                <div><span class="text-yellow-600">Review Cha</span> PSYCH 205</div>
+                <div><span class="text-yellow-600">Group Meet</span> BUSN 301</div>
+                <div></div><div></div><div></div><div><span class="text-green-600">Weekly Plar</span> Productivity</div>
+            </div>
+            <button class="mt-4 bg-blue-600 text-white p-2 rounded">Sync with Google Calendar</button>
+        </section>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
