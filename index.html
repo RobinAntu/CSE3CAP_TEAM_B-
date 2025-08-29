@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Study Flex</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    .page { max-width: 500px; margin: 0 auto; }
+    input, select, textarea, button { display: block; margin: 10px 0; padding: 8px; width: 100%; }
+    nav button { width: auto; margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    function LoginPage({ onSignup, onLogin }) {
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      return (
+        <div className="page">
+          <h2>Welcome Back</h2>
+          <label>Email
+            <input id="login-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          </label>
+          <label>Password
+            <input id="login-password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          </label>
+          <button id="login-button" onClick={onLogin}>Login</button>
+          <p>Don't have an account? <button id="show-signup" onClick={onSignup}>Sign up</button></p>
+        </div>
+      );
+    }
+
+    function SignupPage({ onLogin, onSignupComplete }) {
+      const [first, setFirst] = useState('');
+      const [last, setLast] = useState('');
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      return (
+        <div className="page">
+          <h2>Sign up</h2>
+          <label>First name
+            <input id="signup-first" value={first} onChange={e => setFirst(e.target.value)} />
+          </label>
+          <label>Last name
+            <input id="signup-last" value={last} onChange={e => setLast(e.target.value)} />
+          </label>
+          <label>Email
+            <input id="signup-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          </label>
+          <label>Password
+            <input id="signup-password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          </label>
+          <button id="signup-button" onClick={onSignupComplete}>Sign up</button>
+          <p>Already have an account? <button id="show-login" onClick={onLogin}>Log in</button></p>
+        </div>
+      );
+    }
+
+    function DashboardPage({ onSettings, onInputWizard, onTask }) {
+      return (
+        <div className="page">
+          <h2>Dashboard</h2>
+          <button id="to-settings" onClick={onSettings}>Settings</button>
+          <button id="to-wizard" onClick={onInputWizard}>Input Wizard</button>
+          <ul>
+            <li><button id="task-1" onClick={onTask}>Complete Research Paper Draft</button></li>
+          </ul>
+        </div>
+      );
+    }
+
+    function SettingsPage({ onBack }) {
+      const [email, setEmail] = useState('john.doe@example.com');
+      const [current, setCurrent] = useState('');
+      const [next, setNext] = useState('');
+      const [confirm, setConfirm] = useState('');
+      const [emails, setEmails] = useState(true);
+      return (
+        <div className="page">
+          <h2>Settings</h2>
+          <label>Email Address
+            <input id="settings-email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          </label>
+          <label>Current Password
+            <input id="settings-current" type="password" value={current} onChange={e => setCurrent(e.target.value)} />
+          </label>
+          <label>New Password
+            <input id="settings-new" type="password" value={next} onChange={e => setNext(e.target.value)} />
+          </label>
+          <label>Confirm New Password
+            <input id="settings-confirm" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} />
+          </label>
+          <label>
+            <input id="settings-emails" type="checkbox" checked={emails} onChange={e => setEmails(e.target.checked)} />
+            Receive email notifications
+          </label>
+          <button id="settings-back" onClick={onBack}>Save Changes</button>
+        </div>
+      );
+    }
+
+    function InputWizardPage({ onBack }) {
+      const [step, setStep] = useState(1);
+      const next = () => setStep(s => s + 1);
+      const prev = () => setStep(s => s - 1);
+
+      const Step1 = () => (
+        <div>
+          <h3>Course Details & Deadlines</h3>
+          <label>Course Name
+            <input id="wizard-course" />
+          </label>
+          <label>Credits
+            <input id="wizard-credits" type="number" />
+          </label>
+          <label>Midterm Deadline
+            <input id="wizard-midterm" type="date" />
+          </label>
+          <label>Final Project Deadline
+            <input id="wizard-project" type="date" />
+          </label>
+          <button id="wizard-next1" onClick={next}>Next</button>
+        </div>
+      );
+
+      const Step2 = () => (
+        <div>
+          <h3>Learning Goals & Timetable</h3>
+          <label>Target Grade
+            <select id="wizard-grade">
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+          <label>Skill Acquisition
+            <textarea id="wizard-skill" />
+          </label>
+          <label>Weekly Study Hours
+            <input id="wizard-hours" type="number" />
+          </label>
+          <button id="wizard-prev2" onClick={prev}>Previous</button>
+          <button id="wizard-next2" onClick={next}>Next</button>
+        </div>
+      );
+
+      const Step3 = () => (
+        <div>
+          <h3>Preferences</h3>
+          <label>Preferred Study Time
+            <select id="wizard-time">
+              <option value="morning">Morning</option>
+              <option value="afternoon">Afternoon</option>
+              <option value="evening">Evening</option>
+            </select>
+          </label>
+          <label>Session Length
+            <select id="wizard-length">
+              <option value="30">30 minutes</option>
+              <option value="60">60 minutes</option>
+              <option value="90">90 minutes</option>
+            </select>
+          </label>
+          <button id="wizard-prev3" onClick={prev}>Previous</button>
+          <button id="wizard-finish" onClick={onBack}>Finish</button>
+        </div>
+      );
+
+      return (
+        <div className="page">
+          <h2>Input Wizard</h2>
+          {step === 1 && <Step1 />}
+          {step === 2 && <Step2 />}
+          {step === 3 && <Step3 />}
+        </div>
+      );
+    }
+
+    function TaskDetailPage({ onBack }) {
+      return (
+        <div className="page">
+          <h2>Complete Research Paper Draft</h2>
+          <p>Deadline: May 15, 2024</p>
+          <p>AI Prediction: High chance of being delayed.</p>
+          <button id="task-back" onClick={onBack}>Back to Dashboard</button>
+        </div>
+      );
+    }
+
+    function App() {
+      const [page, setPage] = useState('login');
+      return (
+        <div>
+          {page === 'login' && <LoginPage onSignup={() => setPage('signup')} onLogin={() => setPage('dashboard')} />}
+          {page === 'signup' && <SignupPage onLogin={() => setPage('login')} onSignupComplete={() => setPage('dashboard')} />}
+          {page === 'dashboard' && <DashboardPage onSettings={() => setPage('settings')} onInputWizard={() => setPage('wizard')} onTask={() => setPage('task')} />}
+          {page === 'settings' && <SettingsPage onBack={() => setPage('dashboard')} />}
+          {page === 'wizard' && <InputWizardPage onBack={() => setPage('dashboard')} />}
+          {page === 'task' && <TaskDetailPage onBack={() => setPage('dashboard')} />}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
