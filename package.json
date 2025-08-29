@@ -1,0 +1,9 @@
+{
+  "name": "study-flex",
+  "version": "1.0.0",
+  "description": "Study Flex React SPA",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"No tests\""
+  }
+}
