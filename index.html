@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Flex</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 h-screen bg-gray-100 p-4">
+            <div>
+                <img src="https://via.placeholder.com/50" alt="Study Flex Logo" class="mb-4">
+                <h2 class="text-xl font-bold text-blue-600">Study Flex</h2>
+                <ul class="mt-6">
+                    <li class="mb-2"><a href="#dashboard" class="text-gray-600 hover:text-blue-600">Dashboard</a></li>
+                    <li class="mb-2"><a href="#schedule" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                    <li class="mb-2"><a href="#input-wizard" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                    <li class="mb-2"><a href="#settings" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content ml-64 p-6">
+            <nav class="bg-white p-4 shadow">
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                    <li><a href="#schedule" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                    <li><a href="#input-wizard" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                    <li><a href="#settings" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+                    <li class="ml-auto"><input type="text" placeholder="Search..." class="border p-2 rounded"></li>
+                </ul>
+            </nav>
+
+            <!-- Login Page -->
+            <section id="login" class="mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-blue-600">Study Flex</h2>
+                <h3 class="text-xl mt-2">Welcome Back</h3>
+                <p class="text-gray-600 mt-2">Login to your account</p>
+                <form class="mt-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Email</label>
+                        <input type="email" placeholder="Enter your email" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Password</label>
+                        <input type="password" placeholder="Your secure password" class="w-full p-2 border rounded">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Login</button>
+                    <p class="text-center text-blue-600 mt-2">Forgot password?</p>
+                    <p class="text-center text-blue-600 mt-2">Don't have an account? <a href="#signup">Sign up</a></p>
+                </form>
+            </section>
+
+            <!-- Signup Page -->
+            <section id="signup" class="hidden mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+                <h2 class="text-2xl font-bold">Sign up</h2>
+                <form class="mt-4">
+                    <div class="mb-4 flex space-x-4">
+                        <input type="text" placeholder="First name" class="w-1/2 p-2 border rounded">
+                        <input type="text" placeholder="Last name" class="w-1/2 p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <input type="email" placeholder="example@email.com" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <input type="password" placeholder="Enter at least 8 characters" class="w-full p-2 border rounded">
+                    </div>
+                    <label class="flex items-center mb-4">
+                        <input type="checkbox" class="mr-2">
+                        <span class="text-gray-600">By signing up, I agree with the Terms of Use & Privacy Policy</span>
+                    </label>
+                    <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Sign up</button>
+                    <p class="text-center text-blue-600 mt-2">Already have an account? <a href="#login">Log in</a></p>
+                    <div class="text-center mt-4">OR</div>
+                    <div class="flex justify-center space-x-4 mt-4">
+                        <button class="bg-red-600 text-white p-2 rounded-full"><i class="fab fa-google"></i></button>
+                        <button class="bg-blue-800 text-white p-2 rounded-full"><i class="fab fa-facebook-f"></i></button>
+                        <button class="bg-black text-white p-2 rounded-full"><i class="fab fa-apple"></i></button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="hidden mt-10">
+                <h2 class="text-2xl font-bold">Dashboard</h2>
+                <h3 class="text-lg mt-4">Weekly Overview</h3>
+                <div class="grid grid-cols-7 gap-2 mt-2">
+                    <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                    <div><span class="text-red-600">Submit Mar</span> BUSN 301</div>
+                    <div><span class="text-green-600">Attend Lab</span> CHEM 101</div>
+                    <div><span class="text-red-600">Draft Essay</span> ENGL 102</div>
+                    <div><span class="text-green-600">Practice Prc</span> MATH 150</div>
+                    <div><span class="text-red-600">Research Pj</span> BIOL 210</div>
+                    <div><span class="text-red-600">Study for M</span> PSYCH 205</div>
+                    <div><span class="text-green-600">Relax and R</span> Self-Care</div>
+                    <div><span class="text-yellow-600">Review Cha</span> PSYCH 205</div>
+                    <div><span class="text-yellow-600">Group Meet</span> BUSN 301</div>
+                    <div></div><div></div><div></div><div><span class="text-green-600">Weekly Plar</span> Productivity</div>
+                </div>
+                <button class="mt-4 bg-blue-600 text-white p-2 rounded">Sync with Google Calendar</button>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="settings" class="hidden mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+                <h2 class="text-2xl font-bold">Settings</h2>
+                <form class="mt-4">
+                    <h3 class="text-lg">Account Settings</h3>
+                    <p>Email Address: john.doe@example.com <button type="button" class="text-blue-600 ml-2">Edit</button></p>
+                    <h4 class="mt-2">Change Password</h4>
+                    <input type="password" placeholder="Current Password" class="w-full p-2 border rounded mt-2">
+                    <input type="password" placeholder="New Password" class="w-full p-2 border rounded mt-2">
+                    <input type="password" placeholder="Confirm New Password" class="w-full p-2 border rounded mt-2">
+                    <button type="submit" class="mt-2 bg-blue-600 text-white p-2 rounded">Update Password</button>
+                    <div class="mt-4 flex items-center">
+                        <label class="text-gray-600">Receive email notifications</label>
+                        <input type="checkbox" checked class="ml-2">
+                    </div>
+                </form>
+                <button type="submit" class="mt-4 bg-blue-600 text-white p-2 rounded">Save Changes</button>
+            </section>
+
+            <!-- Input Wizard Page -->
+            <section id="input-wizard" class="hidden mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+                <h2 class="text-2xl font-bold">Input Wizard</h2>
+                <p class="text-gray-600 mt-2">Define Your Academic Goals and Personal Timetable</p>
+                <div class="mt-4">
+                    <button class="bg-blue-600 text-white p-2 rounded mr-2">Course Details</button>
+                    <button class="bg-gray-300 text-gray-600 p-2 rounded mr-2">Goals & Timetable</button>
+                    <button class="bg-gray-300 text-gray-600 p-2 rounded">Preferences</button>
+                </div>
+                <div class="mt-4">
+                    <h3>Course Details & Deadlines</h3>
+                    <input type="text" placeholder="e.g., Introduction to Algorithms" class="w-full p-2 border rounded mt-2">
+                    <input type="number" placeholder="Select credits" class="w-full p-2 border rounded mt-2">
+                    <input type="date" placeholder="Midterm Exam Deadline" class="w-full p-2 border rounded mt-2">
+                    <input type="date" placeholder="Final Project Deadline" class="w-full p-2 border rounded mt-2">
+                </div>
+                <div class="mt-4">
+                    <h3>Learning Goals & Personal Timetable</h3>
+                    <textarea placeholder="Describe specific skills or knowledge you aim to acquire, and how you plan to achieve them." class="w-full p-2 border rounded mt-2" rows="4"></textarea>
+                </div>
+                <div class="mt-4">
+                    <h3>Study Preferences & Customizations</h3>
+                    <div class="mt-2">
+                        <label>Preferred Study Times</label>
+                        <input type="checkbox" checked class="ml-2"> Morning
+                        <input type="checkbox" class="ml-2"> Afternoon
+                        <input type="checkbox" class="ml-2"> Evening
+                    </div>
+                    <div class="mt-2">
+                        <label>Session Length Options</label>
+                        <input type="radio" name="session" checked> 30 minutes
+                        <input type="radio" name="session"> 60 minutes
+                        <input type="radio" name="session"> 90 minutes
+                        <input type="radio" name="session"> 120 minutes
+                    </div>
+                    <div class="mt-2">
+                        <label>Daily Study Hours</label>
+                        <input type="range" min="1" max="8" value="4" class="w-full">
+                        <span>4 hrs</span>
+                    </div>
+                    <div class="mt-2">
+                        <label>Preferred Learning Style</label>
+                        <select class="w-full p-2 border rounded">
+                            <option>Visual</option>
+                            <option>Auditory</option>
+                            <option>Kinaesthetic</option>
+                        </select>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <label>Enable AI Alerts</label>
+                        <input type="checkbox" checked class="ml-2">
+                    </div>
+                </div>
+                <button class="mt-4 bg-blue-600 text-white p-2 rounded">Next</button>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
