@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Flex - Input Wizard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <div class="sidebar w-64 h-screen bg-gray-100 p-4 fixed">
+        <div>
+            <img src="https://via.placeholder.com/50" alt="Study Flex Logo" class="mb-4">
+            <h2 class="text-xl font-bold text-blue-600">Study Flex</h2>
+            <ul class="mt-6">
+                <li class="mb-2"><a href="dashboard.html" class="text-gray-600 hover:text-blue-600">Dashboard</a></li>
+                <li class="mb-2"><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li class="mb-2"><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li class="mb-2"><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content ml-64 p-6">
+        <nav class="bg-white p-4 shadow">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                <li><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+                <li class="ml-auto"><input type="text" placeholder="Search..." class="border p-2 rounded"></li>
+            </ul>
+        </nav>
+
+        <!-- Input Wizard Page -->
+        <section class="mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold">Input Wizard</h2>
+            <p class="text-gray-600 mt-2">Define Your Academic Goals and Personal Timetable</p>
+            <div class="mt-4">
+                <button class="bg-blue-600 text-white p-2 rounded mr-2">Course Details</button>
+                <button class="bg-gray-300 text-gray-600 p-2 rounded mr-2">Goals & Timetable</button>
+                <button class="bg-gray-300 text-gray-600 p-2 rounded">Preferences</button>
+            </div>
+            <div class="mt-4">
+                <h3>Course Details & Deadlines</h3>
+                <input type="text" placeholder="e.g., Introduction to Algorithms" class="w-full p-2 border rounded mt-2" required>
+                <input type="number" placeholder="Select credits" class="w-full p-2 border rounded mt-2" required>
+                <input type="date" placeholder="Midterm Exam Deadline" class="w-full p-2 border rounded mt-2" required>
+                <input type="date" placeholder="Final Project Deadline" class="w-full p-2 border rounded mt-2" required>
+            </div>
+            <div class="mt-4">
+                <h3>Learning Goals & Personal Timetable</h3>
+                <textarea placeholder="Describe specific skills or knowledge you aim to acquire, and how you plan to achieve them." class="w-full p-2 border rounded mt-2" rows="4" required></textarea>
+            </div>
+            <div class="mt-4">
+                <h3>Study Preferences & Customizations</h3>
+                <div class="mt-2">
+                    <label>Preferred Study Times</label>
+                    <input type="checkbox" checked class="ml-2"> Morning
+                    <input type="checkbox" class="ml-2"> Afternoon
+                    <input type="checkbox" class="ml-2"> Evening
+                </div>
+                <div class="mt-2">
+                    <label>Session Length Options</label>
+                    <input type="radio" name="session" checked> 30 minutes
+                    <input type="radio" name="session"> 60 minutes
+                    <input type="radio" name="session"> 90 minutes
+                    <input type="radio" name="session"> 120 minutes
+                </div>
+                <div class="mt-2">
+                    <label>Daily Study Hours</label>
+                    <input type="range" min="1" max="8" value="4" class="w-full">
+                    <span>4 hrs</span>
+                </div>
+                <div class="mt-2">
+                    <label>Preferred Learning Style</label>
+                    <select class="w-full p-2 border rounded">
+                        <option>Visual</option>
+                        <option>Auditory</option>
+                        <option>Kinaesthetic</option>
+                    </select>
+                </div>
+                <div class="mt-2 flex items-center">
+                    <label>Enable AI Alerts</label>
+                    <input type="checkbox" checked class="ml-2">
+                </div>
+            </div>
+            <button class="mt-4 bg-blue-600 text-white p-2 rounded">Next</button>
+        </section>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
