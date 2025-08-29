@@ -1,0 +1,55 @@
+:root {
+  --background: #f0f4f8;
+  --text: #333333;
+  --card-bg: #ffffff;
+  --border: #dfe3e6;
+  --accent: #0066cc;
+  --accent-hover: #005bb5;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: var(--background);
+  color: var(--text);
+}
+
+.page {
+  max-width: 500px;
+  margin: 40px auto;
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input,
+select,
+textarea,
+button {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+nav button {
+  width: auto;
+  margin-right: 10px;
+}
