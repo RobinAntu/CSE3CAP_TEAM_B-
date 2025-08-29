@@ -1,0 +1,41 @@
+/* style.css - Custom styles */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    height: 100%;
+    background: #f8f9fa;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+section {
+    transition: opacity 0.3s ease;
+}
+
+button {
+    cursor: pointer;
+}
+
+.bg-blue-600:hover {
+    background-color: #1d4ed8;
+}
+
+.text-blue-600:hover {
+    color: #1d4ed8;
+}
+
+input, textarea, select {
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
