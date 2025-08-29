@@ -4,7 +4,7 @@ A simple React single-page application (SPA) with login, sign-up, dashboard, set
 
 ## Prerequisites
 - A modern web browser (Chrome, Firefox, Edge, etc.)
-- [Node.js](https://nodejs.org/) 18 or later (optional; needed only for running the test script or serving files locally)
+- [Node.js](https://nodejs.org/) 18 or later (needed for the local server or running tests)
 
 ## Running the App
 You can view the app using either of the following methods:
@@ -13,16 +13,16 @@ You can view the app using either of the following methods:
 1. Download or clone this repository.
 2. Open `index.html` in your web browser.
 
-### Option B: Serve with Node.js
-1. Install dependencies (none are required, but this ensures `npm` is set up):
+### Option B: Run the provided Node.js server
+1. Install dependencies:
    ```bash
    npm install
    ```
-2. Start a simple static server (using `npx` which comes with Node.js):
+2. Start the server:
    ```bash
-   npx serve .
+   npm start
    ```
-3. Open the URL printed in the terminal (e.g., http://localhost:3000) in your browser.
+3. Open `http://localhost:3000` in your browser.
 
 ## Testing
 A placeholder test script is included. Run it with:
@@ -36,7 +36,8 @@ This currently prints a message indicating there are no tests.
 - `app.js` – React components for authentication, dashboard, settings, wizard, and plan views.
 - `planner.js` – Demonstrates the planning algorithm pipeline and persists data with `localStorage`.
 - `style.css` – Global theme and layout.
-- `package.json` – Basic metadata and placeholder scripts.
+- `server.js` – Simple Express server for hosting the app.
+- `package.json` – Basic metadata, server and test scripts, and dependencies.
 
 ## Data Persistence
 User inputs and generated plans are saved in the browser's `localStorage` so you can revisit and monitor previously entered data.
