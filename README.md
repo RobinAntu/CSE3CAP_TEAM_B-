@@ -51,4 +51,4 @@ The prototype includes a simple algorithm (`planner.js`) that mirrors the backen
 6. **Scheduling Optimizer** – builds a weekly plan from estimates, priorities, and availability.
 7. **Plan Storage & Synchronization** – saves the plan and exposes it to the dashboard for display.
 
-On the dashboard, clicking **Generate Plan** runs this pipeline with sample data and renders the resulting weekly schedule.
+On the dashboard, clicking **Generate Plan** runs this pipeline with sample data and opens a dedicated page that lists the generated weekly schedule.

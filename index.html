@@ -58,9 +58,7 @@
       );
     }
 
-    function DashboardPage({ onSettings, onInputWizard, onTask }) {
-      const [plan, setPlan] = useState([]);
-
+    function DashboardPage({ onSettings, onInputWizard, onTask, setPlan, onPlan }) {
       const generate = () => {
         const user = { email: 'john@example.com' };
         const data = {
@@ -73,6 +71,7 @@
           }
         };
         setPlan(generatePlan(user, data));
+        onPlan();
       };
 
       return (
@@ -81,11 +80,6 @@
           <button id="to-settings" onClick={onSettings}>Settings</button>
           <button id="to-wizard" onClick={onInputWizard}>Input Wizard</button>
           <button id="generate-plan" onClick={generate}>Generate Plan</button>
-          {plan.length > 0 && (
-            <pre id="plan-output">
-              {plan.map((p, i) => `${i + 1}. ${p.task} -> ${p.slot}`).join('\n')}
-            </pre>
-          )}
           <ul>
             <li><button id="task-1" onClick={onTask}>Complete Research Paper Draft</button></li>
           </ul>
@@ -210,16 +204,32 @@
       );
     }
 
+    function PlanPage({ plan, onBack }) {
+      return (
+        <div className="page">
+          <h2>Your Study Plan</h2>
+          <ul id="plan-list">
+            {plan.map((p, i) => (
+              <li key={i}>{p.task} &ndash; {p.slot}</li>
+            ))}
+          </ul>
+          <button id="plan-back" onClick={onBack}>Back to Dashboard</button>
+        </div>
+      );
+    }
+
     function App() {
       const [page, setPage] = useState('login');
+      const [plan, setPlan] = useState([]);
       return (
         <div>
           {page === 'login' && <LoginPage onSignup={() => setPage('signup')} onLogin={() => setPage('dashboard')} />}
           {page === 'signup' && <SignupPage onLogin={() => setPage('login')} onSignupComplete={() => setPage('dashboard')} />}
-          {page === 'dashboard' && <DashboardPage onSettings={() => setPage('settings')} onInputWizard={() => setPage('wizard')} onTask={() => setPage('task')} />}
+          {page === 'dashboard' && <DashboardPage onSettings={() => setPage('settings')} onInputWizard={() => setPage('wizard')} onTask={() => setPage('task')} setPlan={setPlan} onPlan={() => setPage('plan')} />}
           {page === 'settings' && <SettingsPage onBack={() => setPage('dashboard')} />}
           {page === 'wizard' && <InputWizardPage onBack={() => setPage('dashboard')} />}
           {page === 'task' && <TaskDetailPage onBack={() => setPage('dashboard')} />}
+          {page === 'plan' && <PlanPage plan={plan} onBack={() => setPage('dashboard')} />}
         </div>
       );
     }
