@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Flex - Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <div class="sidebar w-64 h-screen bg-gray-100 p-4 fixed">
+        <div>
+            <img src="https://via.placeholder.com/50" alt="Study Flex Logo" class="mb-4">
+            <h2 class="text-xl font-bold text-blue-600">Study Flex</h2>
+            <ul class="mt-6">
+                <li class="mb-2"><a href="dashboard.html" class="text-gray-600 hover:text-blue-600">Dashboard</a></li>
+                <li class="mb-2"><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li class="mb-2"><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li class="mb-2"><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content ml-64 p-6">
+        <nav class="bg-white p-4 shadow">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
+                <li><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
+                <li><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
+                <li><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
+                <li class="ml-auto"><input type="text" placeholder="Search..." class="border p-2 rounded"></li>
+            </ul>
+        </nav>
+
+        <!-- Settings Page -->
+        <section class="mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+            <h2 class="text-2xl font-bold">Settings</h2>
+            <form class="mt-4">
+                <h3 class="text-lg">Account Settings</h3>
+                <p>Email Address: john.doe@example.com <button type="button" class="text-blue-600 ml-2">Edit</button></p>
+                <h4 class="mt-2">Change Password</h4>
+                <input type="password" placeholder="Current Password" class="w-full p-2 border rounded mt-2" required>
+                <input type="password" placeholder="New Password" class="w-full p-2 border rounded mt-2" required>
+                <input type="password" placeholder="Confirm New Password" class="w-full p-2 border rounded mt-2" required>
+                <button type="submit" class="mt-2 bg-blue-600 text-white p-2 rounded">Update Password</button>
+                <div class="mt-4 flex items-center">
+                    <label class="text-gray-600">Receive email notifications</label>
+                    <input type="checkbox" checked class="ml-2">
+                </div>
+            </form>
+            <button type="submit" class="mt-4 bg-blue-600 text-white p-2 rounded">Save Changes</button>
+        </section>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
