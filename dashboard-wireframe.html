@@ -1,0 +1,19 @@
+import zipfile
+import os
+
+# Path to the uploaded zip file
+zip_path = "/mnt/data/CSE3CAP_TEAM_B--development.zip"
+extract_dir = "/mnt/data/CSE3CAP_TEAM_B--development_extracted"
+
+# Create directory and extract the zip file
+os.makedirs(extract_dir, exist_ok=True)
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_dir)
+
+# List the extracted files and directories
+file_list = []
+for root, dirs, files in os.walk(extract_dir):
+    for file in files:
+        file_list.append(os.path.relpath(os.path.join(root, file), extract_dir))
+
+file_list[:50]  # Show first 50 entries if many files exist
