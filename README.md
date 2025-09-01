@@ -1,6 +1,6 @@
 # Study Flex Prototype
 
-A simple React single-page application (SPA) with login, sign-up, dashboard, settings, and a multi-step input wizard. The app is delivered as a static HTML file and uses React via CDN links.
+A simple React-style single-page application (SPA) with login, sign-up, dashboard, settings, and a multi-step input wizard. The app ships with a tiny offline React-like runtime so no external CDN links are required.
 
 ## Prerequisites
 - A modern web browser (Chrome, Firefox, Edge, etc.)
@@ -28,12 +28,13 @@ npm test
 This currently prints a message indicating there are no tests.
 
 ## Project Structure
-- `index.html` – Entry point that loads React from a CDN and attaches the app.
-- `app.js` – React components for authentication, dashboard, settings, wizard, and plan views.
+- `index.html` – Entry point that loads the planner and the local React-like runtime.
+- `app.js` – Components for authentication, dashboard, settings, wizard, and plan views built on the tiny runtime.
 - `planner.js` – Demonstrates the planning algorithm pipeline and persists data with `localStorage`.
 - `style.css` – Global theme and layout.
 - `server.js` – Lightweight Node server for hosting the app.
 - `package.json` – Basic metadata plus server and test scripts (no external dependencies).
+- `react-lite.js` – Minimal React-like runtime used by `app.js`.
 
 ## Data Persistence
 User inputs and generated plans are saved in the browser's `localStorage` so you can revisit and monitor previously entered data.
