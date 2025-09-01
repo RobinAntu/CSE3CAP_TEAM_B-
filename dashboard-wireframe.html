@@ -1,121 +1,19 @@
-import React from "react";
-// Optional: if your project has Framer Motion installed, uncomment the next line and replace <div> with <motion.div>
-// import { motion } from "framer-motion";
+import zipfile
+import os
 
-/**
- * Dashboard UI Wireframe
- * - Pure React + Tailwind CSS (no extra UI kit required)
- * - Greyscale wireframe styling with dashed placeholders
- * - Responsive layout: sidebar, top bar, KPI cards, charts, table, and right widgets
- *
- * How to use:
- * 1) Ensure Tailwind is configured in your project.
- * 2) Drop this component into your app and render <DashboardWireframe />.
- * 3) Replace placeholder blocks with real charts/tables/components.
- */
+# Path to the uploaded zip file
+zip_path = "/mnt/data/CSE3CAP_TEAM_B--development.zip"
+extract_dir = "/mnt/data/CSE3CAP_TEAM_B--development_extracted"
 
-export default function DashboardWireframe() {
-  return (
-    <div className="h-dvh w-full bg-neutral-50 text-neutral-800">
-      <div className="grid h-full grid-cols-[260px_1fr] grid-rows-[auto_1fr] md:grid-cols-[280px_1fr]">
-        {/* Sidebar */}
-        <aside className="row-span-2 hidden border-r border-neutral-200 bg-white p-4 md:block">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="size-9 rounded-xl border border-dashed border-neutral-300" />
-            <div>
-              <div className="h-3 w-28 rounded border border-dashed border-neutral-300" />
-              <div className="mt-2 h-2 w-16 rounded border border-dashed border-neutral-300" />
-            </div>
-          </div>
+# Create directory and extract the zip file
+os.makedirs(extract_dir, exist_ok=True)
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_dir)
 
-          <nav className="space-y-1">
-            {[
-              "Dashboard",
-              "Analytics",
-              "Orders",
-              "Customers",
-              "Products",
-              "Reports",
-              "Settings",
-            ].map((item) => (
-              <button
-                key={item}
-                className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-neutral-100"
-              >
-                <span className="size-5 rounded-md border border-dashed border-neutral-300" />
-                <span className="flex-1 text-sm text-neutral-700">{item}</span>
-                <span className="size-4 rounded border border-dashed border-neutral-300" />
-              </button>
-            ))}
-          </nav>
+# List the extracted files and directories
+file_list = []
+for root, dirs, files in os.walk(extract_dir):
+    for file in files:
+        file_list.append(os.path.relpath(os.path.join(root, file), extract_dir))
 
-          <div className="mt-6 rounded-2xl border border-dashed border-neutral-300 p-3">
-            <div className="mb-2 h-3 w-24 rounded border border-dashed border-neutral-300" />
-            <div className="h-2 w-40 rounded border border-dashed border-neutral-300" />
-            <div className="mt-3 h-9 w-full rounded-xl border border-dashed border-neutral-300" />
-          </div>
-
-          <div className="mt-auto hidden md:block">
-            <div className="mt-6 rounded-2xl border border-dashed border-neutral-300 p-3">
-              <div className="mb-2 h-3 w-28 rounded border border-dashed border-neutral-300" />
-              <div className="h-2 w-44 rounded border border-dashed border-neutral-300" />
-            </div>
-          </div>
-        </aside>
-
-        {/* Top Bar */}
-        <header className="col-start-1 col-end-3 flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 md:col-start-2">
-          <div className="flex flex-1 items-center gap-2">
-            <button className="md:hidden">
-              <div className="size-8 rounded-xl border border-dashed border-neutral-300" />
-            </button>
-            <div className="h-9 flex-1 rounded-2xl border border-dashed border-neutral-300 md:max-w-md" />
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="size-8 rounded-xl border border-dashed border-neutral-300" />
-            <div className="size-8 rounded-full border border-dashed border-neutral-300" />
-          </div>
-        </header>
-
-        {/* Main content */}
-        <main className="col-start-1 row-start-2 overflow-y-auto p-4 md:col-start-2">
-          {/* KPI Cards */}
-          <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div
-                key={i}
-                className="rounded-2xl border border-dashed border-neutral-300 bg-white p-4"
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="h-3 w-24 rounded border border-dashed border-neutral-300" />
-                  <div className="size-6 rounded-lg border border-dashed border-neutral-300" />
-                </div>
-                <div className="h-8 w-28 rounded border border-dashed border-neutral-300" />
-                <div className="mt-3 h-2 w-20 rounded border border-dashed border-neutral-300" />
-              </div>
-            ))}
-          </section>
-
-          {/* Charts Row */}
-          <section className="mt-4 grid gap-3 lg:grid-cols-3">
-            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-4 lg:col-span-2">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="h-3 w-28 rounded border border-dashed border-neutral-300" />
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-28 rounded-xl border border-dashed border-neutral-300" />
-                  <div className="h-8 w-20 rounded-xl border border-dashed border-neutral-300" />
-                </div>
-              </div>
-              <div className="h-64 w-full rounded-xl border border-dashed border-neutral-300" />
-            </div>
-            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-4">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="h-3 w-40 rounded border border-dashed border-neutral-300" />
-                <div className="h-8 w-24 rounded-xl border border-dashed border-neutral-300" />
-              </div>
-              <div className="space-y-3">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="size-9 rounded-lg border border-dashed border-neutral-300" />
-                    <div className="flex-1">
-                      <div className="h-3 w-32 rounded border border-dashed border-neutral
+file_list[:50]  # Show first 50 entries if many files exist
