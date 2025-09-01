@@ -5,7 +5,7 @@ const React = (() => {
   let rootComponent = null;
   function createElement(tag, props, ...children) {
     if (typeof tag === 'function') {
-      return tag(Object.assign({}, props, { children }));
+      return tag(Object.assign({}, props, { children: children.flat() }));
     }
     const el = document.createElement(tag);
     for (const [key, value] of Object.entries(props || {})) {
@@ -18,7 +18,7 @@ const React = (() => {
       }
     }
     (children.flat()).forEach(child => {
-      if (child == null) return;
+      if (child == null || child === false) return;
       if (typeof child === 'string' || typeof child === 'number') {
         el.appendChild(document.createTextNode(String(child)));
       } else {
