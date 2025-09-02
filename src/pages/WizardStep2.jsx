@@ -34,7 +34,10 @@ export default function WizardStep2() {
           </div>
           <div>
             <label className="block text-sm font-medium">Skill Acquisition</label>
-            <Textarea rows={3} placeholder="e.g., \"Master Python for data analysis\"" />
+            <Textarea
+              rows={3}
+              placeholder={'e.g., "Master Python for data analysis"'}
+            />
           </div>
         </div>
       </Card>

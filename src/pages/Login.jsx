@@ -4,7 +4,6 @@ import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { useAuth } from "../auth/AuthContext";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export default function Login() {
   const { login } = useAuth();
@@ -50,14 +49,10 @@ export default function Login() {
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-2 flex items-center"
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm"
                 onClick={() => setShow(!show)}
               >
-                {show ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500" />
-                )}
+                {show ? "Hide" : "Show"}
               </button>
             </div>
           </div>

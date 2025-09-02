@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BellIcon } from "@heroicons/react/24/outline";
 import Input from "../ui/Input";
 import IconButton from "../ui/IconButton";
 
@@ -21,7 +20,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-2">
         <Input type="search" placeholder="Search" className="hidden md:block w-48 shadow-sm" />
         <IconButton aria-label="notifications">
-          <BellIcon className="h-5 w-5" />
+          <span role="img" aria-label="bell">🔔</span>
         </IconButton>
         <div className="h-8 w-8 rounded-full bg-gray-300" aria-label="avatar placeholder" />
       </div>

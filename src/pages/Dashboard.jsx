@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
-import { CalendarIcon, PlayIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { weekly } from "../data/sample";
 import { generatePlan } from "../lib/planner";
@@ -20,15 +19,11 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Dashboard</h1>
         <div className="space-x-2">
-          <Button>
-            <CalendarIcon className="mr-2 h-5 w-5" /> Sync with Google Calendar
-          </Button>
+          <Button>Sync with Google Calendar</Button>
           <Link to="/task/1">
             <Button variant="ghost">View Task Details</Button>
           </Link>
-          <Button variant="ghost" onClick={handleGenerate}>
-            <PlayIcon className="mr-2 h-5 w-5" /> Generate Plan
-          </Button>
+          <Button variant="ghost" onClick={handleGenerate}>Generate Plan</Button>
         </div>
       </div>
       <Card className="p-6">
