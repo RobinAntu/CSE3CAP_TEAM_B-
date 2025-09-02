@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { load, save } from "../lib/storage";
-import { weekly } from "../data/sample";
 
 const seedCourses = [
   {
@@ -53,21 +52,7 @@ const seedCourses = [
   },
 ];
 
-const colorMap = { red: "#ef4444", yellow: "#f59e0b", green: "#10b981" };
 const seedEvents = [];
-Object.entries(weekly).forEach(([day, tasks]) => {
-  tasks.forEach((t, i) => {
-    seedEvents.push({
-      id: `${day}-${i}`,
-      title: t.title,
-      day,
-      start: "09:00",
-      end: "10:00",
-      course: t.course,
-      color: colorMap[t.status] || "#3b82f6",
-    });
-  });
-});
 
 const seedPrefs = {
   timeZone: "Australia/Melbourne",
