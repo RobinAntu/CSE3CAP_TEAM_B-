@@ -1,22 +1,41 @@
-export function generatePlan(weekly) {
-  const hours = [
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-  ];
+function minsToTime(mins) {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+function timeToMins(time) {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function buildSlots(times, length, hours) {
+  const ranges = [];
+  if (times.morning) ranges.push([9 * 60, 12 * 60]);
+  if (times.afternoon) ranges.push([13 * 60, 17 * 60]);
+  if (times.evening) ranges.push([18 * 60, 21 * 60]);
+
+  const slots = [];
+  for (const [start, end] of ranges) {
+    for (let t = start; t + length <= end && slots.length < hours; t += length) {
+      slots.push(minsToTime(t));
+    }
+  }
+  return slots;
+}
+
+export function generatePlan(weekly, prefs = {}) {
+  const { times = { morning: true, afternoon: true, evening: false }, length = 60, hours = 4 } = prefs;
+  const slots = buildSlots(times, Number(length), Number(hours));
   const plan = [];
+
   Object.entries(weekly).forEach(([day, tasks]) => {
     tasks.forEach((t, idx) => {
-      const start = hours[idx % hours.length];
-      const endIndex = (idx % hours.length) + 1;
-      const end = endIndex < hours.length ? hours[endIndex] : "17:00";
+      const start = slots[idx % slots.length] || "09:00";
+      const end = minsToTime(timeToMins(start) + Number(length));
       plan.push({ title: t.title, day, start, end });
     });
   });
+
   return plan;
 }

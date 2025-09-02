@@ -7,6 +7,8 @@ import Radio from "../components/ui/Radio";
 import Slider from "../components/ui/Slider";
 import Select from "../components/ui/Select";
 import Switch from "../components/ui/Switch";
+import { weekly } from "../data/sample";
+import { generatePlan } from "../lib/planner";
 
 export default function WizardStep3() {
   const navigate = useNavigate();
@@ -14,6 +16,16 @@ export default function WizardStep3() {
   const [length, setLength] = useState("60");
   const [hours, setHours] = useState(4);
   const [alerts, setAlerts] = useState(false);
+
+  const handleGenerate = () => {
+    const plan = generatePlan(weekly, {
+      times,
+      length: parseInt(length, 10),
+      hours: Number(hours),
+    });
+    localStorage.setItem("sf_plan", JSON.stringify(plan));
+    navigate("/dashboard");
+  };
 
   return (
     <div className="space-y-8">
@@ -87,7 +99,7 @@ export default function WizardStep3() {
           <Link to="/wizard/2">
             <Button variant="ghost">Previous</Button>
           </Link>
-          <Button onClick={() => navigate("/dashboard")}>Generate Schedule</Button>
+          <Button onClick={handleGenerate}>Generate Schedule</Button>
         </div>
       </div>
     </div>

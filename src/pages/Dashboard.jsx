@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import { Link, useNavigate } from "react-router-dom";
 import { weekly } from "../data/sample";
-import { generatePlan } from "../lib/planner";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [plan, setPlan] = useState([]);
 
-  const handleGenerate = () => {
-    const plan = generatePlan(weekly);
-    localStorage.setItem("sf_plan", JSON.stringify(plan));
-    navigate("/plan");
-  };
+  useEffect(() => {
+    const stored = localStorage.getItem("sf_plan");
+    if (stored) setPlan(JSON.parse(stored));
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -23,7 +22,7 @@ export default function Dashboard() {
           <Link to="/task/1">
             <Button variant="ghost">View Task Details</Button>
           </Link>
-          <Button variant="ghost" onClick={handleGenerate}>Generate Plan</Button>
+          <Button variant="ghost" onClick={() => navigate("/wizard/1")}>Generate Plan</Button>
         </div>
       </div>
       <Card className="p-6">
@@ -56,6 +55,31 @@ export default function Dashboard() {
           ))}
         </div>
       </Card>
+      {plan.length > 0 && (
+        <Card className="p-6">
+          <h2 className="mb-4 text-xl font-semibold">Generated Plan</h2>
+          <div className="grid grid-cols-7 gap-4 text-sm">
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
+              <div key={day} className="space-y-2">
+                <div className="text-center font-medium">{day}</div>
+                {plan
+                  .filter((p) => p.day === day)
+                  .map((p, i) => (
+                    <div
+                      key={i}
+                      className="rounded-xl border border-gray-200 p-2"
+                    >
+                      <div className="truncate text-sm font-medium">{p.title}</div>
+                      <div className="text-xs text-gray-500">
+                        {p.start} - {p.end}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 }
