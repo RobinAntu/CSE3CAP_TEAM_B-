@@ -17,7 +17,7 @@ export default function StatsCards({ stats }) {
     },
     {
       title: "Streak",
-      value: `${stats.streak} days",
+      value: `${stats.streak} days`,
       subtitle: "consecutive",
       icon: FireIcon,
     },
@@ -31,7 +31,10 @@ export default function StatsCards({ stats }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((c) => (
-        <div key={c.title} className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div
+          key={c.title}
+          className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-4 shadow-sm"
+        >
           <div>
             <div className="text-sm text-gray-500">{c.title}</div>
             <div className="text-2xl font-semibold">{c.value}</div>
