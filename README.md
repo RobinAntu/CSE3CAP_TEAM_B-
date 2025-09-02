@@ -2,6 +2,8 @@
 
 A simple React-style single-page application (SPA) with login, sign-up, a home dashboard, settings, and a multi-step input wizard. The app ships with a tiny offline React-like runtime so no external CDN links are required.
 
+The dashboard now includes a weekly calendar where students can add personal study sessions or class times. Generated plans appear alongside these entries so all commitments are visible in one place.
+
 ## Prerequisites
 - A modern web browser (Chrome, Firefox, Edge, etc.)
 - [Node.js](https://nodejs.org/) 18 or later (needed for the local server or running tests)
@@ -37,7 +39,7 @@ This currently prints a message indicating there are no tests.
 - `react-lite.js` – Minimal React-like runtime used by `app.js`.
 
 ## Data Persistence
-User inputs and generated plans are saved in the browser's `localStorage` so you can revisit and monitor previously entered data.
+User inputs, saved sessions, and generated plans are stored in the browser's `localStorage` so you can revisit and monitor previously entered data.
 
 ## Notes
 This project is a minimal prototype. For a production-ready React app, consider using a build tool like Vite, CRA, or Next.js.

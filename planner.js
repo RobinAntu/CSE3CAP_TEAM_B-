@@ -30,8 +30,9 @@ function collectInputs(data) {
 // Step 3: Backend Data Management
 function storeData(data) {
   const db = loadDB();
-  db.tasks = data.tasks;
-  db.preferences = data.preferences;
+  if (data.tasks) db.tasks = data.tasks;
+  if (data.preferences) db.preferences = data.preferences;
+  if (data.sessions) db.sessions = data.sessions;
   saveDB(db);
   return data;
 }

@@ -1,10 +1,11 @@
 :root {
-  --color-bg: #f9fafb;
+  --color-bg: #f8fafc;
   --color-text: #1f2937;
   --color-surface: #ffffff;
-  --color-border: #e5e7eb;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
+  --color-border: #e2e8f0;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-accent: #10b981;
 }
 
 body {
@@ -118,6 +119,50 @@ button:hover {
   padding: 8px;
   vertical-align: top;
   min-width: 80px;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.calendar th,
+.calendar td {
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  vertical-align: top;
+  min-width: 100px;
+}
+
+.calendar th {
+  background: var(--color-surface);
+}
+
+.calendar td {
+  background: var(--color-bg);
+}
+
+.session {
+  background: var(--color-surface);
+  border-left: 4px solid var(--color-primary);
+  margin: 4px 0;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.session.class {
+  border-left-color: var(--color-accent);
+}
+
+.session-form {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  max-width: 400px;
 }
 
 .dash-actions {
