@@ -1,1 +1,20 @@
-# CSE3CAP_TEAM_B-
+# StudyFlex
+
+StudyFlex is a simple student planner prototype built with React 18, Vite and Tailwind CSS. The app includes a mock authentication flow and the core pages from the mockups: Login, Sign up, Dashboard with weekly overview, multi‑step Input Wizard, Settings and Task Details. State is stored in `localStorage` for demo purposes.
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+The development server will start with Vite on port 5173.
+
+## Testing
+
+```bash
+npm test
+```
+
+(Tests are placeholders and simply print a message.)
