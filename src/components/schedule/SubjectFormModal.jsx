@@ -3,7 +3,16 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 
 export default function SubjectFormModal({ onSave, onClose, initial }){
-  const [form, setForm] = useState(initial || { code:"", title:"", instructor:"", color:"#3b82f6", active:true });
+  const [form, setForm] = useState(
+    initial || {
+      code: "",
+      title: "",
+      instructor: "",
+      color: "#3b82f6",
+      active: true,
+      weeklyTargetHours: 3,
+    }
+  );
   function update(k,v){ setForm({...form,[k]:v}); }
   function submit(){ if(form.code && form.title) onSave(form); }
   return (
@@ -14,6 +23,10 @@ export default function SubjectFormModal({ onSave, onClose, initial }){
         <label className="block text-sm">Title<Input value={form.title} onChange={e=>update('title',e.target.value)} /></label>
         <label className="block text-sm">Instructor<Input value={form.instructor} onChange={e=>update('instructor',e.target.value)} /></label>
         <label className="block text-sm">Color<Input type="color" value={form.color} onChange={e=>update('color',e.target.value)} /></label>
+        <label className="block text-sm">Weekly Target Hours
+          <Input type="number" min="0" value={form.weeklyTargetHours}
+            onChange={e=>update('weeklyTargetHours', Number(e.target.value))} />
+        </label>
         <label className="flex items-center space-x-2 text-sm"><input type="checkbox" checked={form.active} onChange={e=>update('active',e.target.checked)} /><span>Active</span></label>
         <div className="flex justify-end space-x-2 pt-2">
           <Button variant="secondary" onClick={onClose}>Cancel</Button>

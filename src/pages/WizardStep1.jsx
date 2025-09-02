@@ -5,9 +5,12 @@ import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
 import Textarea from "../components/ui/Textarea";
 import { Accordion, AccordionItem } from "../components/ui/Accordion";
+import Card from "../components/ui/Card";
+import { useAppContext } from "../context/AppContext";
 
 export default function WizardStep1() {
   const navigate = useNavigate();
+  const { courses } = useAppContext();
   const [course, setCourse] = useState("");
 
   return (
@@ -26,6 +29,18 @@ export default function WizardStep1() {
         <span>›</span>
         <span>3 Preferences</span>
       </div>
+      {courses.length > 0 && (
+        <Card className="p-4">
+          <h2 className="text-xl font-semibold">Current Subjects</h2>
+          <ul className="mt-2 list-disc pl-5 space-y-1">
+            {courses.map((c) => (
+              <li key={c.id} className="text-sm">
+                {c.code} - {c.title}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
       <Accordion>
         <AccordionItem title="Course Details & Deadlines" defaultOpen>
           <div className="grid gap-4 md:grid-cols-2">
