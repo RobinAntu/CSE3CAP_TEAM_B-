@@ -225,10 +225,8 @@ function App() {
     const db = getStoredData();
     const tasks = db.tasks || [];
     const user = { email: 'john@example.com' };
-    const data = {
-      tasks,
-      preferences: db.preferences || { availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM'] }
-    };
+    const availability = computeAvailability(db.sessions || [], db.preferences || {});
+    const data = { tasks, preferences: { availability } };
     setPlan(generatePlan(user, data));
   };
 

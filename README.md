@@ -52,7 +52,7 @@ The prototype includes a simple algorithm (`planner.js`) that mirrors the backen
 3. **Backend Data Management** – stores structured tasks and preferences.
 4. **Job Orchestration** – triggers plan generation independently of the UI.
 5. **AI/ML Models** – estimates study hours and assigns priority scores.
-6. **Scheduling Optimizer** – builds a weekly plan from estimates, priorities, and availability.
+6. **Scheduling Optimizer** – derives free hourly slots from recorded classes and fills them with prioritized tasks.
 7. **Plan Storage & Synchronization** – saves the plan and exposes it to the home dashboard for display.
 
 On the home page, clicking **Generate Plan** runs this pipeline and immediately lists the generated weekly schedule on the same screen.

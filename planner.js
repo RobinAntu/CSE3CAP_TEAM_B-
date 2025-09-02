@@ -51,6 +51,29 @@ function priorityScore(task) {
   return weight * 100 - daysLeft;
 }
 
+// derive free hourly slots by removing class or saved sessions
+function computeAvailability(sessions, opts = {}) {
+  const { dayStart = 8, dayEnd = 18 } = opts;
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const occupied = new Set();
+  sessions.forEach((s) => {
+    const hour = parseInt(s.time.split(':')[0], 10);
+    occupied.add(`${s.day}-${hour}`);
+  });
+  const format = (h) => {
+    const suffix = h >= 12 ? 'PM' : 'AM';
+    const hour = h % 12 === 0 ? 12 : h % 12;
+    return `${hour}${suffix}`;
+  };
+  const free = [];
+  days.forEach((d) => {
+    for (let h = dayStart; h < dayEnd; h++) {
+      if (!occupied.has(`${d}-${h}`)) free.push(`${d} ${format(h)}`);
+    }
+  });
+  return free;
+}
+
 // Step 6: Scheduling Optimizer
 function optimizeSchedule(tasks, preferences) {
   const availability = preferences.availability || [];
@@ -103,3 +126,4 @@ function generatePlan(user, data) {
 window.generatePlan = generatePlan;
 window.saveUserData = storeData;
 window.getStoredData = getStoredData;
+window.computeAvailability = computeAvailability;
