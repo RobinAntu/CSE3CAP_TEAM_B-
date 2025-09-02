@@ -6,7 +6,9 @@ const seedCourses = [
     id: "c1",
     code: "BUSN301",
     title: "Business Strategy",
+    instructor: "Dr. Adams",
     color: "#ef4444",
+    active: true,
     weeklyTargetHours: 4,
     fixedSlots: [{ type: "lecture", day: "Mon", start: "09:00", end: "10:00" }],
     assessments: [
@@ -22,7 +24,9 @@ const seedCourses = [
     id: "c2",
     code: "PSYCH205",
     title: "Psychology",
+    instructor: "Dr. Grey",
     color: "#10b981",
+    active: true,
     weeklyTargetHours: 4,
     fixedSlots: [{ type: "tutorial", day: "Wed", start: "11:00", end: "12:00" }],
     assessments: [
@@ -38,7 +42,9 @@ const seedCourses = [
     id: "c3",
     code: "MATH150",
     title: "Calculus",
+    instructor: "Prof. Lin",
     color: "#f59e0b",
+    active: true,
     weeklyTargetHours: 3,
     fixedSlots: [{ type: "lecture", day: "Thu", start: "10:00", end: "11:00" }],
     assessments: [
@@ -52,7 +58,12 @@ const seedCourses = [
   },
 ];
 
-const seedEvents = [];
+const seedEvents = [
+  { id: "e1", title: "Lecture", day: "Mon", start: "09:00", end: "10:00", courseId: "c1", kind: "class" },
+  { id: "e2", title: "Tutorial", day: "Wed", start: "11:00", end: "12:00", courseId: "c2", kind: "class" },
+  { id: "e3", title: "Lecture", day: "Thu", start: "10:00", end: "11:00", courseId: "c3", kind: "class" },
+  { id: "e4", title: "Study: BUSN301", day: "Mon", start: "10:30", end: "11:30", courseId: "c1", kind: "study" },
+];
 
 const seedPrefs = {
   timeZone: "Australia/Melbourne",
