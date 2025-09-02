@@ -62,7 +62,7 @@ function Shell({ children, setPage }) {
     h('nav', { className: 'sidebar' }, [
       h('h1', { className: 'logo' }, 'Study Flex'),
       h('ul', null, [
-        h('li', null, h('button', { id: 'nav-dashboard', onClick: () => setPage('dashboard') }, 'Dashboard')),
+        h('li', null, h('button', { id: 'nav-home', onClick: () => setPage('home') }, 'Home')),
         h('li', null, h('button', { id: 'nav-wizard', onClick: () => setPage('wizard') }, 'Input Wizard')),
         h('li', null, h('button', { id: 'nav-settings', onClick: () => setPage('settings') }, 'Settings'))
       ])
@@ -71,12 +71,20 @@ function Shell({ children, setPage }) {
   ]);
 }
 
-function DashboardPage({ generatePlan, onTask }) {
-  return h('div', { className: 'dashboard' }, [
-    h('h2', null, 'Dashboard'),
-    h('p', null, 'Welcome to your study planner dashboard.'),
-    h('button', { id: 'generate-plan', onClick: generatePlan }, 'Generate Plan'),
-    h('button', { id: 'task-detail', onClick: onTask }, 'Task Detail')
+function HomePage({ plan, generatePlan, onTask }) {
+  return h('div', { className: 'home' }, [
+    h('h2', null, 'Home'),
+    plan.length
+      ? h('ul', null, plan.map((p, i) => h('li', { key: i }, `${p.slot}: ${p.task}`)))
+      : h('p', null, 'No plan generated yet.'),
+    h('div', { className: 'dash-actions' }, [
+      h(
+        'button',
+        { id: 'generate-plan', onClick: generatePlan },
+        plan.length ? 'Regenerate Plan' : 'Generate Plan'
+      ),
+      h('button', { id: 'task-detail', onClick: onTask }, 'Task Detail')
+    ])
   ]);
 }
 
@@ -125,14 +133,6 @@ function TaskDetailPage({ onBack }) {
   ]);
 }
 
-function PlanPage({ plan, onBack }) {
-  return h('div', { className: 'plan-page' }, [
-    h('h3', null, 'Weekly Plan'),
-    h('ul', null, plan.map((p, i) => h('li', { key: i }, `${p.slot}: ${p.task}`))),
-    h('button', { id: 'plan-back', onClick: onBack }, 'Back to Dashboard')
-  ]);
-}
-
 function App() {
   const [page, setPage] = useState('login');
   const [plan, setPlan] = useState([]);
@@ -146,18 +146,16 @@ function App() {
       preferences: db.preferences || { availability: ['Mon 9AM', 'Tue 1PM', 'Wed 3PM', 'Thu 10AM', 'Fri 2PM'] }
     };
     setPlan(generatePlan(user, data));
-    setPage('plan');
   };
 
-  if (page === 'login') return h(LoginPage, { onSignup: () => setPage('signup'), onLogin: () => setPage('dashboard') });
-  if (page === 'signup') return h(SignupPage, { onLogin: () => setPage('login'), onSignupComplete: () => setPage('dashboard') });
+  if (page === 'login') return h(LoginPage, { onSignup: () => setPage('signup'), onLogin: () => setPage('home') });
+  if (page === 'signup') return h(SignupPage, { onLogin: () => setPage('login'), onSignupComplete: () => setPage('home') });
 
   return h(Shell, { setPage }, [
-    page === 'dashboard' && h(DashboardPage, { generatePlan: generatePlanAndShow, onTask: () => setPage('task') }),
-    page === 'wizard' && h(InputWizardPage, { onBack: () => setPage('dashboard') }),
-    page === 'settings' && h(SettingsPage, { onBack: () => setPage('dashboard') }),
-    page === 'task' && h(TaskDetailPage, { onBack: () => setPage('dashboard') }),
-    page === 'plan' && h(PlanPage, { plan, onBack: () => setPage('dashboard') })
+    page === 'home' && h(HomePage, { plan, generatePlan: generatePlanAndShow, onTask: () => setPage('task') }),
+    page === 'wizard' && h(InputWizardPage, { onBack: () => setPage('home') }),
+    page === 'settings' && h(SettingsPage, { onBack: () => setPage('home') }),
+    page === 'task' && h(TaskDetailPage, { onBack: () => setPage('home') })
   ]);
 }
 

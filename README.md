@@ -1,6 +1,6 @@
 # Study Flex Prototype
 
-A simple React-style single-page application (SPA) with login, sign-up, dashboard, settings, and a multi-step input wizard. The app ships with a tiny offline React-like runtime so no external CDN links are required.
+A simple React-style single-page application (SPA) with login, sign-up, a home dashboard, settings, and a multi-step input wizard. The app ships with a tiny offline React-like runtime so no external CDN links are required.
 
 ## Prerequisites
 - A modern web browser (Chrome, Firefox, Edge, etc.)
@@ -29,7 +29,7 @@ This currently prints a message indicating there are no tests.
 
 ## Project Structure
 - `index.html` – Entry point that loads the planner and the local React-like runtime.
-- `app.js` – Components for authentication, dashboard, settings, wizard, and plan views built on the tiny runtime.
+- `app.js` – Components for authentication, home dashboard, settings, and wizard views built on the tiny runtime.
 - `planner.js` – Demonstrates the planning algorithm pipeline and persists data with `localStorage`.
 - `style.css` – Global theme and layout.
 - `server.js` – Lightweight Node server for hosting the app.
@@ -51,6 +51,6 @@ The prototype includes a simple algorithm (`planner.js`) that mirrors the backen
 4. **Job Orchestration** – triggers plan generation independently of the UI.
 5. **AI/ML Models** – estimates study hours and assigns priority scores.
 6. **Scheduling Optimizer** – builds a weekly plan from estimates, priorities, and availability.
-7. **Plan Storage & Synchronization** – saves the plan and exposes it to the dashboard for display.
+7. **Plan Storage & Synchronization** – saves the plan and exposes it to the home dashboard for display.
 
-On the dashboard, clicking **Generate Plan** runs this pipeline with sample data and opens a dedicated page that lists the generated weekly schedule.
+On the home page, clicking **Generate Plan** runs this pipeline and immediately lists the generated weekly schedule on the same screen.

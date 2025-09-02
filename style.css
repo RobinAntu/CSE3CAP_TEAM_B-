@@ -33,7 +33,7 @@ body {
   font-size: 0.9rem;
 }
 
-.shell {
+.app-shell {
   display: flex;
   min-height: 100vh;
 }
@@ -50,7 +50,7 @@ body {
   margin-bottom: 20px;
 }
 
-.sidebar nav button {
+.sidebar button {
   width: 100%;
   background: none;
   color: var(--color-text);
@@ -62,11 +62,11 @@ body {
   cursor: pointer;
 }
 
-.sidebar nav button:hover {
+.sidebar button:hover {
   background: var(--color-bg);
 }
 
-.main {
+.content {
   flex: 1;
   padding: 24px;
 }
