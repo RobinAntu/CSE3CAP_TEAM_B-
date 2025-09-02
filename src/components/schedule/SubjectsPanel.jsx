@@ -35,7 +35,10 @@ export default function SubjectsPanel({ subjects, onAdd, onEdit, onDelete, onExp
                 <div className="text-xs text-gray-500">{s.title}</div>
               </div>
             </div>
-            <button onClick={e=>{e.stopPropagation();onEdit(s);}} aria-label="edit">✏️</button>
+            <div className="space-x-1">
+              <button onClick={e=>{e.stopPropagation();onEdit(s);}} aria-label="edit">✏️</button>
+              <button onClick={e=>{e.stopPropagation();onDelete&&onDelete(s.id);}} aria-label="delete">🗑️</button>
+            </div>
           </div>
         ))}
       </div>

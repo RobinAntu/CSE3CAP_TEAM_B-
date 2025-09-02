@@ -25,6 +25,13 @@ export default function Schedule(){
 
   const subjectOptions = courses.map(c=>({value:c.id,label:c.code}));
 
+  function deleteSubject(id){
+    if(!window.confirm("Delete subject and its sessions?")) return;
+    setCourses(courses.filter(c=>c.id!==id));
+    setEvents(events.filter(e=>e.courseId!==id));
+    setSelectedSubjects(prev=>prev.filter(sid=>sid!==id));
+  }
+
   function saveSubject(data){
     if(editingSubject){
       setCourses(courses.map(c=> c.id===editingSubject.id ? {...editingSubject, ...data} : c));
@@ -58,7 +65,7 @@ export default function Schedule(){
 
   return (
     <div className="flex h-full">
-      <SubjectsPanel subjects={courses} filter={filter} setFilter={setFilter} onAdd={()=>{setEditingSubject(null);setShowSubjectForm(true);}} onEdit={s=>{setEditingSubject(s);setShowSubjectForm(true);}} onExportCSV={()=>downloadCSV(events)} onExportICS={()=>downloadICS(events)} onSelect={id=>setSelectedSubjects([id])} />
+      <SubjectsPanel subjects={courses} filter={filter} setFilter={setFilter} onAdd={()=>{setEditingSubject(null);setShowSubjectForm(true);}} onEdit={s=>{setEditingSubject(s);setShowSubjectForm(true);}} onDelete={id=>deleteSubject(id)} onExportCSV={()=>downloadCSV(events)} onExportICS={()=>downloadICS(events)} onSelect={id=>setSelectedSubjects([id])} />
       <div className="flex-1 p-4 overflow-auto">
         <WeekToolbar week={week} onPrev={()=>setWeek(addDays(week,-7))} onNext={()=>setWeek(addDays(week,7))} onToday={()=>setWeek(new Date())} subjectFilter={selectedSubjects} setSubjectFilter={setSelectedSubjects} kindFilter={kindFilter} setKindFilter={setKindFilter} timeFilter={timeFilter} setTimeFilter={setTimeFilter} subjectOptions={subjectOptions} />
         <StatsBar events={filteredEvents} subjects={courses} />
