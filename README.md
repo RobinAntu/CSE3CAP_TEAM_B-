@@ -1,58 +1,37 @@
 # Study Flex Prototype
 
-A simple React-style single-page application (SPA) with login, sign-up, a home dashboard, settings, and a multi-step input wizard. The app ships with a tiny offline React-like runtime so no external CDN links are required.
+This repository now contains a web app built with React 18, TypeScript, Vite, Tailwind CSS, and shadcn/ui plus a matching React Native (Expo) settings suite. Both showcase a comprehensive settings experience with profile management, security controls, notifications, appearance, language, connections, data export, and account deletion flows.
 
-The dashboard now includes a weekly calendar where students can add personal study sessions or class times. Generated plans appear alongside these entries so all commitments are visible in one place.
+## Web App
 
-## Prerequisites
-- A modern web browser (Chrome, Firefox, Edge, etc.)
-- [Node.js](https://nodejs.org/) 18 or later (needed for the local server or running tests)
+### Prerequisites
+- Node.js 18+
 
-## Running the App
-You can view the app using either of the following methods:
+### Development
+```bash
+npm install
+npm run dev
+```
+Visit `http://localhost:5173/settings` to open the settings page.
 
-### Option A: Open the file directly
-1. Download or clone this repository.
-2. Open `index.html` in your web browser.
-
-### Option B: Run the provided Node.js server
-1. Start the server (no install step needed):
-   ```bash
-   npm start
-   ```
-2. Open `http://localhost:3000` in your browser.
-
-## Testing
-A placeholder test script is included. Run it with:
+### Tests
 ```bash
 npm test
 ```
-This currently prints a message indicating there are no tests.
+(Currently prints a placeholder message.)
+
+## React Native App
+
+The `mobile/` directory contains Expo screens. Use Expo to run:
+```bash
+cd mobile
+expo start
+```
 
 ## Project Structure
-- `index.html` – Entry point that loads the planner and the local React-like runtime.
-- `app.js` – Components for authentication, home dashboard, settings, and wizard views built on the tiny runtime.
-- `planner.js` – Demonstrates the planning algorithm pipeline and persists data with `localStorage`.
-- `style.css` – Global theme and layout.
-- `server.js` – Lightweight Node server for hosting the app.
-- `package.json` – Basic metadata plus server and test scripts (no external dependencies).
-- `react-lite.js` – Minimal React-like runtime used by `app.js`.
-
-## Data Persistence
-User inputs, saved sessions, and generated plans are stored in the browser's `localStorage` so you can revisit and monitor previously entered data.
+- `index.html`, `src/` – Vite web app entry and sources
+- `mobile/app/` – Expo navigation and settings screens
+- `mobile/src/` – shared context, mock API, validators, and theme helpers for mobile
 
 ## Notes
-This project is a minimal prototype. For a production-ready React app, consider using a build tool like Vite, CRA, or Next.js.
-
-## Planning Algorithm Overview
-The prototype includes a simple algorithm (`planner.js`) that mirrors the backend steps of a future planner service:
-
-1. **User Registration & Authentication** – validates user credentials and issues a session token.
-2. **Input Collection** – gathers courses, deadlines, and user preferences.
-3. **Backend Data Management** – stores structured tasks and preferences.
-4. **Job Orchestration** – triggers plan generation independently of the UI.
-5. **AI/ML Models** – estimates study hours and assigns priority scores.
-6. **Scheduling Optimizer** – derives free hourly slots from recorded classes and fills them with prioritized tasks.
-7. **Plan Storage & Synchronization** – saves the plan and exposes it to the home dashboard for display.
-
-On the home page, clicking **Generate Plan** runs this pipeline and immediately lists the generated weekly schedule on the same screen.
+The mock APIs simulate latency and 10% failure rates. Theme and language preferences persist via localStorage on web and AsyncStorage on mobile.
