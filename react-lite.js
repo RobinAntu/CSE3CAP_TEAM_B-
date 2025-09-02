@@ -40,8 +40,15 @@ const React = (() => {
   function render() {
     hookIndex = 0;
     const container = ReactDOM._root;
+    // remember focused element so typing in inputs doesn't lose focus
+    const active = document.activeElement;
+    const activeId = active && active.id;
     container.innerHTML = '';
     container.appendChild(rootComponent());
+    if (activeId) {
+      const newActive = container.querySelector(`#${activeId}`);
+      if (newActive) newActive.focus();
+    }
   }
   return {
     createElement,
