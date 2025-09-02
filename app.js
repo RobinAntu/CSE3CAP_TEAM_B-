@@ -77,9 +77,11 @@ function Calendar({ plan, sessions }) {
   days.forEach((d) => (events[d] = []));
   plan.forEach((p) => {
     const [day, time] = p.slot.split(' ');
+    if (!events[day]) events[day] = [];
     events[day].push(`${time} ${p.task}`);
   });
   sessions.forEach((s) => {
+    if (!events[s.day]) events[s.day] = [];
     events[s.day].push({ time: s.time, title: s.title, type: s.type });
   });
   return h(
@@ -158,7 +160,7 @@ function HomePage({ plan, sessions, addSession, generatePlan, onTask }) {
         h('option', { value: 'study' }, 'Study'),
         h('option', { value: 'class' }, 'Class'),
       ])),
-      h('button', { id: 'add-session', onClick: submit }, 'Add'),
+      h('button', { id: 'add-session', type: 'button', onClick: submit }, 'Add'),
     ]),
     h('div', { className: 'dash-actions' }, [
       h(
