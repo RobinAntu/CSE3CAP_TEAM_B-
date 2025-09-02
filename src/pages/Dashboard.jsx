@@ -18,11 +18,22 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-semibold">Dashboard</h1>
         <div className="space-x-2">
-          <Button>Sync with Google Calendar</Button>
+          <Button
+            onClick={() =>
+              window.open("https://calendar.google.com/calendar/u/0/r", "_blank")
+            }
+          >
+            Sync with Google Calendar
+          </Button>
           <Link to="/task/1">
             <Button variant="ghost">View Task Details</Button>
           </Link>
-          <Button variant="ghost" onClick={() => navigate("/wizard/1")}>Generate Plan</Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/wizard/1")}
+          >
+            Generate Plan
+          </Button>
         </div>
       </div>
       <Card className="p-6">

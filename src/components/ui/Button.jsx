@@ -3,6 +3,7 @@ import React from "react";
 export default function Button({
   variant = "primary",
   className = "",
+  type = "button",
   ...props
 }) {
   const base =
@@ -13,6 +14,10 @@ export default function Button({
     secondary: "bg-gray-100 text-gray-700 hover:bg-gray-200",
   };
   return (
-    <button className={`${base} ${variants[variant]} ${className}`} {...props} />
+    <button
+      type={type}
+      className={`${base} ${variants[variant]} ${className}`}
+      {...props}
+    />
   );
 }
