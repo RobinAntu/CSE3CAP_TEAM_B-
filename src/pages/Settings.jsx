@@ -4,11 +4,17 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import Switch from "../components/ui/Switch";
 import { Accordion, AccordionItem } from "../components/ui/Accordion";
+import { useAppContext } from "../context/AppContext";
 
 export default function Settings() {
   const [email] = useState("john.doe@example.com");
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
   const [notify, setNotify] = useState(true);
+  const { events, setEvents } = useAppContext();
+
+  const clearSessions = () => {
+    setEvents(events.filter((e) => !e.title.startsWith("Study: ")));
+  };
 
   return (
     <div className="space-y-8 pb-24">
@@ -58,13 +64,14 @@ export default function Settings() {
               <label className="flex items-center space-x-2"><input type="checkbox" className="h-4 w-4"/> <span>iCal</span></label>
             </div>
           </AccordionItem>
-          <AccordionItem title="Privacy & Data">
-            <div className="space-y-2">
-              <label className="flex items-center justify-between"><span>Discoverable profile</span><Switch checked={false} onChange={() => {}}/></label>
-              <label className="flex items-center justify-between"><span>Show online status</span><Switch checked={true} onChange={() => {}}/></label>
-              <Button variant="ghost">Download my data</Button>
-            </div>
-          </AccordionItem>
+            <AccordionItem title="Privacy & Data">
+              <div className="space-y-2">
+                <label className="flex items-center justify-between"><span>Discoverable profile</span><Switch checked={false} onChange={() => {}}/></label>
+                <label className="flex items-center justify-between"><span>Show online status</span><Switch checked={true} onChange={() => {}}/></label>
+                <Button variant="ghost">Download my data</Button>
+                <Button variant="ghost" onClick={clearSessions}>Clear Study Sessions</Button>
+              </div>
+            </AccordionItem>
         </Accordion>
       </Card>
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-gray-50 p-4 text-right">

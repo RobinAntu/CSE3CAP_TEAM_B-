@@ -7,25 +7,29 @@ import Radio from "../components/ui/Radio";
 import Slider from "../components/ui/Slider";
 import Select from "../components/ui/Select";
 import Switch from "../components/ui/Switch";
-import { weekly } from "../data/sample";
-import { generatePlan } from "../lib/planner";
+import { useAppContext } from "../context/AppContext";
+import useScheduler from "../hooks/useScheduler";
 
 export default function WizardStep3() {
   const navigate = useNavigate();
-  const [times, setTimes] = useState({ morning: true, afternoon: true, evening: false });
-  const [length, setLength] = useState("60");
-  const [hours, setHours] = useState(4);
+  const { prefs, setPrefs } = useAppContext();
+  const { generateSchedule } = useScheduler();
+  const [times, setTimes] = useState(prefs.preferredTimes);
+  const [length, setLength] = useState(String(prefs.sessionMinutes));
+  const [hours, setHours] = useState(prefs.dailyMaxHours);
   const [alerts, setAlerts] = useState(false);
 
-  const handleGenerate = () => {
-    const plan = generatePlan(weekly, {
-      times,
-      length: parseInt(length, 10),
-      hours: Number(hours),
-    });
-    localStorage.setItem("sf_plan", JSON.stringify(plan));
-    navigate("/dashboard");
-  };
+    const handleGenerate = () => {
+      setPrefs({
+        ...prefs,
+        sessionMinutes: parseInt(length, 10),
+        dailyMaxHours: Number(hours),
+        preferredTimes: times,
+      });
+      const count = generateSchedule({ replace: true });
+      window.alert(`Generated ${count} study sessions for this week.`);
+      navigate("/dashboard");
+    };
 
   return (
     <div className="space-y-8">

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 import Page from "./components/layout/Page";
+import { AppProvider } from "./context/AppContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
@@ -21,9 +22,10 @@ function DefaultRoute() {
 export default function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+      <AppProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
           element={
@@ -85,7 +87,8 @@ export default function App() {
           }
         />
         <Route path="/" element={<DefaultRoute />} />
-      </Routes>
+        </Routes>
+      </AppProvider>
     </AuthProvider>
   );
 }
