@@ -13,6 +13,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-4 text-sm text-gray-600">
           <Link to="/dashboard" className="hover:text-gray-900">Home</Link>
           <Link to="/schedule" className="hover:text-gray-900">Schedule</Link>
+          <Link to="/progress" className="hover:text-gray-900">Progress</Link>
           <Link to="/wizard/1" className="hover:text-gray-900">Input Wizard</Link>
           <Link to="/settings" className="hover:text-gray-900">Settings</Link>
         </div>

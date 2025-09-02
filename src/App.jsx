@@ -13,6 +13,7 @@ import WizardStep2 from "./pages/WizardStep2";
 import WizardStep3 from "./pages/WizardStep3";
 import TaskDetails from "./pages/TaskDetails";
 import Schedule from "./pages/Schedule";
+import Progress from "./pages/progress/Progress";
 import { useAuth } from "./auth/AuthContext";
 
 function DefaultRoute() {
@@ -53,6 +54,16 @@ export default function App() {
             <RequireAuth>
               <Page>
                 <Schedule />
+              </Page>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/progress"
+          element={
+            <RequireAuth>
+              <Page>
+                <Progress />
               </Page>
             </RequireAuth>
           }
