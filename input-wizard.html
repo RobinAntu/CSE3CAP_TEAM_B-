@@ -1,97 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Flex - Input Wizard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Study Flex — Input Wizard (HTML + JS)</title>
+  <style>
+    /* --- Reset / base --- */
+    :root{
+      --bg:#f8fafc;--card:#ffffff;--muted:#6b7280;--accent:#2563eb;--accent-50:#eff6ff;--border:#e6e9ee;--danger:#ef4444;--success:#10b981;
+      --radius-lg:18px;--radius-md:12px;--radius-sm:8px;--glass:rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body,#app{height:100%}body{margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:#0f172a}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+
+    /* header */
+    header{background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.7));backdrop-filter:blur(6px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40}
+    .nav{max-width:1100px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand .logo{width:36px;height:36px;border-radius:8px;background:var(--accent)}
+    nav a{color:var(--muted);text-decoration:none;margin-right:12px}
+
+    /* page title */
+    h1{font-size:28px;margin:18px 0 6px}
+    p.lead{margin:0;color:var(--muted)}
+
+    /* stepper card */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px}
+    .stepper{display:flex;align-items:center;justify-content:space-between}
+    .steps{display:flex;gap:22px;align-items:center}
+    .step-dot{display:flex;align-items:center;gap:10px}
+    .dot{width:34px;height:34px;border-radius:999px;border:1px solid #e6e9ee;display:flex;align-items:center;justify-content:center;font-weight:600}
+    .dot.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .dot.done{background:#eff6ff;color:var(--accent);border-color:#dbeafe}
+    .step-label{font-size:14px;color:var(--muted)}
+    .step-label.active{color:#0f172a;font-weight:600}
+
+    /* layout */
+    .grid{display:grid;gap:18px}
+    .two-col{grid-template-columns:repeat(2,1fr)}
+
+    /* sections */
+    .section{border-radius:var(--radius-md);background:var(--card);border:1px solid var(--border)}
+    .section .head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
+    .section .body{padding:16px;border-top:1px solid #f3f4f6}
+
+    label{display:block;font-size:13px;margin-bottom:6px;color:#0f172a}
+    input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);background:transparent;font-size:14px}
+    textarea{resize:vertical}
+
+    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:12px;border:0;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:#0f172a}
+
+    /* cards small */
+    .small-card{border-radius:14px;background:var(--card);border:1px solid var(--border);padding:12px}
+
+    /* timetable */
+    .timetable{overflow:auto;border-radius:12px;border:1px solid var(--border)}
+    table.timetable{width:100%;border-collapse:collapse}
+    .timetable th,.timetable td{border:1px solid #f3f4f6;padding:6px;text-align:center;font-size:13px}
+    .time-cell{font-family:monospace;background:#fbfdff}
+    .cell.free{background:transparent;cursor:pointer}
+    .cell.free:hover{background:#f8fafc}
+    .cell.busy{background:var(--danger);color:#fff;cursor:pointer}
+
+    /* quiz cards */
+    .radio-row{display:flex;flex-direction:column;gap:8px}
+    .radio-option{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:12px;border:1px solid var(--border);cursor:pointer}
+    .radio-option input{margin-top:4px}
+
+    /* summary grid */
+    .summary-grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+
+    /* responsive */
+    @media (max-width:900px){.two-col{grid-template-columns:1fr}.summary-grid{grid-template-columns:1fr}}
+
+    /* tiny helpers */
+    .muted{color:var(--muted);font-size:13px}
+    .xs{font-size:12px}
+    .mt-2{margin-top:8px}
+    .mt-4{margin-top:16px}
+    .flex{display:flex}
+    .gap-2{gap:8px}
+    .justify-between{justify-content:space-between}
+    .items-center{align-items:center}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid var(--border);cursor:pointer}
+    .pill.active{background:var(--accent-50);color:var(--accent);border-color:#dbeafe}
+  </style>
 </head>
-<body class="flex">
-    <!-- Sidebar -->
-    <div class="sidebar w-64 h-screen bg-gray-100 p-4 fixed">
-        <div>
-            <img src="https://via.placeholder.com/50" alt="Study Flex Logo" class="mb-4">
-            <h2 class="text-xl font-bold text-blue-600">Study Flex</h2>
-            <ul class="mt-6">
-                <li class="mb-2"><a href="dashboard.html" class="text-gray-600 hover:text-blue-600">Dashboard</a></li>
-                <li class="mb-2"><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
-                <li class="mb-2"><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
-                <li class="mb-2"><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
-            </ul>
+<body>
+  <div id="app">
+    <header>
+      <div class="nav">
+        <div class="brand"><div class="logo"></div><div style="font-weight:600">Study Flex</div></div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <nav style="display:none" class="desktop-nav"><a href="#">Home</a><a href="#">Schedule</a><a href="#">Input Wizard</a></nav>
+          <input placeholder="Search courses or topics..." style="padding:8px;border-radius:10px;border:1px solid var(--border);display:none" />
+          <div style="width:36px;height:36px;border-radius:50%;background:#e6eefc"></div>
         </div>
-    </div>
+      </div>
+    </header>
 
-    <!-- Content -->
-    <div class="content ml-64 p-6">
-        <nav class="bg-white p-4 shadow">
-            <ul class="flex space-x-4">
-                <li><a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a></li>
-                <li><a href="schedule.html" class="text-gray-600 hover:text-blue-600">Schedule</a></li>
-                <li><a href="input-wizard.html" class="text-gray-600 hover:text-blue-600">Input Wizard</a></li>
-                <li><a href="settings.html" class="text-gray-600 hover:text-blue-600">Settings</a></li>
-                <li class="ml-auto"><input type="text" placeholder="Search..." class="border p-2 rounded"></li>
-            </ul>
-        </nav>
+    <main class="container">
+      <h1>Input Wizard</h1>
+      <p class="lead">Provide details to help us craft your personalized study schedule.</p>
 
-        <!-- Input Wizard Page -->
-        <section class="mt-10 max-w-md mx-auto p-6 bg-white rounded-lg shadow">
-            <h2 class="text-2xl font-bold">Input Wizard</h2>
-            <p class="text-gray-600 mt-2">Define Your Academic Goals and Personal Timetable</p>
-            <div class="mt-4">
-                <button class="bg-blue-600 text-white p-2 rounded mr-2">Course Details</button>
-                <button class="bg-gray-300 text-gray-600 p-2 rounded mr-2">Goals & Timetable</button>
-                <button class="bg-gray-300 text-gray-600 p-2 rounded">Preferences</button>
+      <div class="mt-4 card">
+        <div class="stepper">
+          <div class="steps">
+            <div class="step-dot" data-step="1"><div class="dot" id="dot-1">1</div><div class="step-label" id="label-1">Course Details</div></div>
+            <div class="step-dot" data-step="2"><div class="dot" id="dot-2">2</div><div class="step-label" id="label-2">Goals & Timetable</div></div>
+            <div class="step-dot" data-step="3"><div class="dot" id="dot-3">3</div><div class="step-label" id="label-3">Preferences</div></div>
+          </div>
+          <div class="muted">Step <span id="step-num">1</span> of 3</div>
+        </div>
+      </div>
+
+      <!-- summary area (appears after generate) -->
+      <div id="summaryArea" class="mt-4" style="display:none">
+        <div class="summary-grid">
+          <div class="small-card" id="summary-persona"><div class="muted">Study Persona</div><div id="summary-persona-type" style="font-size:20px;font-weight:700;margin-top:6px">—</div><div class="mt-2 muted">Confidence: <b id="summary-confidence">0%</b></div><hr style="border:none;border-top:1px solid var(--border);margin:10px 0" /><div class="muted xs">Scores</div><ul id="summary-scores" class="mt-2 xs"></ul></div>
+          <div class="small-card" id="summary-course"><div class="muted">Course</div><div id="summary-course-name" style="font-weight:600;margin-top:6px">—</div><div class="mt-2 xs"><div class="muted">Credits</div><div id="summary-course-credits">—</div></div></div>
+          <div class="small-card" id="summary-prefs"><div class="muted">Preferences</div><div class="mt-2 xs" id="summary-prefs-list">—</div></div>
+        </div>
+      </div>
+
+      <!-- main wizard area -->
+      <div class="mt-4 grid">
+
+        <!-- STEP 1 -->
+        <section id="step-1" class="section" data-step="1">
+          <div class="head"><div style="font-weight:600">Course Details & Deadlines</div><div class="xs muted">Fill course info</div></div>
+          <div class="body">
+            <div class="grid two-col">
+              <div>
+                <label>Course Name</label>
+                <input id="courseName" type="text" placeholder="e.g., Introduction to Algorithms" />
+              </div>
+              <div>
+                <label>Credit Hours (enter any number)</label>
+                <input id="courseCredits" type="number" step="0.5" placeholder="e.g., 5 or 7.5" />
+              </div>
+              <div>
+                <label>Midterm Exam Deadline</label>
+                <input id="midtermDate" type="date" />
+              </div>
+              <div>
+                <label>Final Project Deadline</label>
+                <input id="finalDate" type="date" />
+              </div>
             </div>
-            <div class="mt-4">
-                <h3>Course Details & Deadlines</h3>
-                <input type="text" placeholder="e.g., Introduction to Algorithms" class="w-full p-2 border rounded mt-2" required>
-                <input type="number" placeholder="Select credits" class="w-full p-2 border rounded mt-2" required>
-                <input type="date" placeholder="Midterm Exam Deadline" class="w-full p-2 border rounded mt-2" required>
-                <input type="date" placeholder="Final Project Deadline" class="w-full p-2 border rounded mt-2" required>
+            <div style="display:flex;justify-content:space-between;margin-top:18px">
+              <button class="btn ghost" id="prev1" disabled>Previous</button>
+              <button class="btn" id="next1">Next</button>
             </div>
-            <div class="mt-4">
-                <h3>Learning Goals & Personal Timetable</h3>
-                <textarea placeholder="Describe specific skills or knowledge you aim to acquire, and how you plan to achieve them." class="w-full p-2 border rounded mt-2" rows="4" required></textarea>
-            </div>
-            <div class="mt-4">
-                <h3>Study Preferences & Customizations</h3>
-                <div class="mt-2">
-                    <label>Preferred Study Times</label>
-                    <input type="checkbox" checked class="ml-2"> Morning
-                    <input type="checkbox" class="ml-2"> Afternoon
-                    <input type="checkbox" class="ml-2"> Evening
-                </div>
-                <div class="mt-2">
-                    <label>Session Length Options</label>
-                    <input type="radio" name="session" checked> 30 minutes
-                    <input type="radio" name="session"> 60 minutes
-                    <input type="radio" name="session"> 90 minutes
-                    <input type="radio" name="session"> 120 minutes
-                </div>
-                <div class="mt-2">
-                    <label>Daily Study Hours</label>
-                    <input type="range" min="1" max="8" value="4" class="w-full">
-                    <span>4 hrs</span>
-                </div>
-                <div class="mt-2">
-                    <label>Preferred Learning Style</label>
-                    <select class="w-full p-2 border rounded">
-                        <option>Visual</option>
-                        <option>Auditory</option>
-                        <option>Kinaesthetic</option>
-                    </select>
-                </div>
-                <div class="mt-2 flex items-center">
-                    <label>Enable AI Alerts</label>
-                    <input type="checkbox" checked class="ml-2">
-                </div>
-            </div>
-            <button class="mt-4 bg-blue-600 text-white p-2 rounded">Next</button>
+          </div>
         </section>
-    </div>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="app.js"></script>
+        <!-- STEP 2 -->
+        <section id="step-2" class="section" data-step="2" style="display:none;margin-top:14px">
+          <div class="head"><div style="font-weight:600">Learning Goals</div><div class="xs muted">Set learning goals and timetable</div></div>
+          <div class="body">
+            <div class="grid two-col">
+              <div>
+                <label>Target Grade</label>
+                <select id="targetGrade"><option value="">Select grade</option><option>HD</option><option>D</option><option>C</option><option>P</option><option>N/A</option></select>
+              </div>
+              <div></div>
+            </div>
+            <div class="mt-4">
+              <label>Skill Acquisition</label>
+              <textarea id="skillAcq" rows="3" placeholder="Describe skills or knowledge you aim to acquire"></textarea>
+            </div>
+
+            <div class="mt-4">
+              <div style="font-weight:600;margin-bottom:8px">Personal Timetable</div>
+              <div class="timetable">
+                <table class="timetable" id="timetableTable">
+                  <!-- generated by JS -->
+                </table>
+              </div>
+              <div class="muted xs mt-2">Click cells to mark <b>Busy</b>. AI will avoid scheduling in busy slots.</div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:18px">
+              <button class="btn ghost" id="prev2">Previous</button>
+              <button class="btn" id="next2">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section id="step-3" class="section" data-step="3" style="display:none;margin-top:14px">
+          <div class="head"><div style="font-weight:600">Study Preferences & Customizations</div><div class="xs muted">Personalize how you study</div></div>
+          <div class="body">
+            <div class="grid two-col">
+              <div>
+                <div class="muted">Preferred Study Times</div>
+                <div class="mt-2 flex gap-2">
+                  <div class="pill" data-key="morning">Morning</div>
+                  <div class="pill active" data-key="afternoon">Afternoon</div>
+                  <div class="pill" data-key="evening">Evening</div>
+                </div>
+
+                <div class="mt-6">
+                  <div class="muted">Session Length</div>
+                  <div class="mt-2">
+                    <label class="pill" style="display:inline-block;margin-right:8px"><input type="radio" name="session" value="30" /> 30m</label>
+                    <label class="pill" style="display:inline-block;margin-right:8px"><input type="radio" name="session" value="60" checked /> 60m</label>
+                    <label class="pill" style="display:inline-block;margin-right:8px"><input type="radio" name="session" value="90" /> 90m</label>
+                    <label class="pill" style="display:inline-block;margin-right:8px"><input type="radio" name="session" value="120" /> 120m</label>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="muted">Daily Study Hours</div>
+                <div class="mt-2" style="display:flex;align-items:center;gap:12px">
+                  <input id="hoursRange" type="range" min="1" max="10" value="4" />
+                  <div id="hoursValue" style="min-width:40px;font-weight:600">4 hrs</div>
+                </div>
+
+                <div class="mt-4">
+                  <label>Preferred Learning Style</label>
+                  <select id="learningStyle"><option>Visual</option><option>Auditory</option><option>Reading/Writing</option><option>Kinesthetic</option><option>Mixed</option></select>
+                </div>
+
+                <div class="mt-4" style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div class="muted">Enable AI Alerts</div>
+                    <div class="xs muted">Receive personalized alerts and recommendations</div>
+                  </div>
+                  <label style="display:inline-flex;align-items:center;gap:8px"><input id="aiAlerts" type="checkbox" checked /> Enable</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <div class="muted">Study References (notes/links)</div>
+              <textarea id="studyReferences" rows="6" placeholder="Add reading lists, helpful links, or notes. Quiz result will be saved here automatically."></textarea>
+            </div>
+
+            <div class="mt-6 section" style="padding:0;border-radius:12px;border:1px solid var(--border)">
+              <div class="head"><div style="font-weight:600">Persona Quiz</div><div class="xs muted">6 questions to detect your study persona</div></div>
+              <div class="body">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                  <div><strong>Study Persona — 6 Questions</strong><div class="xs muted">Answer to tailor your schedule style.</div></div>
+                  <div class="pill" id="answeredCount">0/6 answered</div>
+                </div>
+
+                <div id="quizArea">
+                  <!-- questions generated by JS -->
+                </div>
+
+                <div class="mt-4 small-card" id="quizLiveResult">Live result: — (0% confidence)</div>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:18px">
+              <button class="btn ghost" id="prev3">Previous</button>
+              <button class="btn" id="generateBtn">Generate Schedule</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer style="margin-top:26px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between">
+        <div><a href="#">Company</a> &nbsp; <a href="#">Legal</a> &nbsp; <a href="#">Contact</a></div>
+        <div>© Study Flex</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    /*************** Full JS for wizard (keeps all features from React version) ***************/
+    (function(){
+      // STATE
+      let step = 1;
+      const totalSteps = 3;
+      const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const hours = Array.from({length:18},(_,i)=>i+6); //6..23
+
+      const QUIZ_POINTS = {
+        Q1a:{EarlyBird:3},Q1b:{Balanced:2},Q1c:{Balanced:2,Sprinter:1},Q1d:{NightOwl:3},
+        Q2a:{Sprinter:3},Q2b:{Balanced:2},Q2c:{Marathoner:3},Q2d:{Marathoner:4},
+        Q3a:{Sprinter:3},Q3b:{Marathoner:3},Q3c:{Balanced:2},Q3d:{EarlyBird:2},
+        Q4a:{EarlyBird:3},Q4b:{Balanced:2},Q4c:{NightOwl:3},Q4d:{Sprinter:2},
+        Q5a:{EarlyBird:3},Q5b:{NightOwl:3},Q5c:{Marathoner:3},Q5d:{Sprinter:3},Q5e:{Balanced:2},
+        Q6a:{Sprinter:3},Q6b:{Marathoner:3},Q6c:{Balanced:2},Q6d:{EarlyBird:2,NightOwl:2}
+      };
+      const ALL_TYPES=['EarlyBird','NightOwl','Sprinter','Marathoner','Balanced'];
+
+      const state = {
+        course:{name:'',credits:'',midterm:'',final:''},
+        goals:{target:'',skills:''},
+        prefs:{times:{morning:false,afternoon:true,evening:false},session:'60',hours:4,style:'Visual',aiAlerts:true,references:''},
+        quiz:{Q1:'',Q2:'',Q3:'',Q4:'',Q5:'',Q6:''},
+        busySlots:{}
+      };
+
+      // helpers
+      const el = (s)=>document.querySelector(s);
+      const els = (s)=>Array.from(document.querySelectorAll(s));
+
+      function setStep(n){
+        step=n; if(step<1)step=1; if(step>totalSteps)step=totalSteps;
+        // show/hide sections
+        els('[data-step]').forEach(sec=>sec.style.display = Number(sec.dataset.step)===step ? 'block':'none');
+        // stepper dots
+        for(let i=1;i<=3;i++){
+          const d = el('#dot-'+i); const l = el('#label-'+i);
+          d.classList.remove('active'); d.classList.remove('done'); l.classList.remove('active');
+          if(i<step){ d.classList.add('done'); l.classList.add('active'); }
+          if(i===step){ d.classList.add('active'); l.classList.add('active'); }
+        }
+        el('#step-num').innerText = step;
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+
+      // timetable render
+      function renderTimetable(){
+        const table = el('#timetableTable'); table.innerHTML='';
+        const thead = document.createElement('thead');
+        const trh = document.createElement('tr');
+        const thTime = document.createElement('th'); thTime.innerText='Time'; thTime.className='time-cell'; trh.appendChild(thTime);
+        days.forEach(d=>{const th=document.createElement('th');th.innerText=d;trh.appendChild(th)});
+        thead.appendChild(trh); table.appendChild(thead);
+
+        const tbody=document.createElement('tbody');
+        hours.forEach(h=>{
+          const tr=document.createElement('tr');
+          const tdTime=document.createElement('td'); tdTime.innerText = h+':00'; tdTime.className='time-cell'; tr.appendChild(tdTime);
+          days.forEach(d=>{
+            const key = d+'-'+h; const busy = !!state.busySlots[key];
+            const td=document.createElement('td'); td.className = 'cell '+(busy?'busy':'free'); td.innerText = busy? 'Busy':'Free';
+            td.addEventListener('click',()=>{ state.busySlots[key]=!state.busySlots[key]; renderTimetable(); });
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+      }
+
+      // quiz render
+      const QUESTIONS = [
+        {id:'Q1',q:'When are you usually most productive?', opts:[['Q1a','Early morning (6–10 AM)'],['Q1b','Late morning (10 AM–1 PM)'],['Q1c','Afternoon (2–6 PM)'],['Q1d','Late evening/night (8 PM–1 AM)']]},
+        {id:'Q2',q:'How long can you usually focus before needing a break?', opts:[['Q2a','< 30 minutes'],['Q2b','30–60 minutes'],['Q2c','90–120 minutes'],['Q2d','> 2 hours']]},
+        {id:'Q3',q:'How do you prefer to handle large tasks?', opts:[['Q3a','Split into many smaller chunks'],['Q3b','Do it in one long session'],['Q3c','Mix of both depending on mood'],['Q3d','Start early and spread over days']]},
+        {id:'Q4',q:'If you have a deadline tomorrow at 9 AM, when would you likely start working?', opts:[['Q4a','The previous morning'],['Q4b','The previous afternoon'],['Q4c','Late evening/night before'],['Q4d','In short sprints throughout the day']]},
+        {id:'Q5',q:'What type of schedule motivates you the most?', opts:[['Q5a','Predictable, consistent routine'],['Q5b','Flexible schedule with freedom'],['Q5c','Structured deep-work blocks'],['Q5d','Small, frequent wins (crossing tasks quickly)'],['Q5e','A mix of everything']]},
+        {id:'Q6',q:'How do you usually feel about switching tasks?', opts:[['Q6a','I like switching often'],['Q6b','I prefer sticking with one task for hours'],['Q6c','I can adapt either way'],['Q6d','I schedule difficult tasks when I feel most alert']]} 
+      ];
+
+      function renderQuiz(){
+        const area = el('#quizArea'); area.innerHTML='';
+        QUESTIONS.forEach(q=>{
+          const card = document.createElement('div'); card.className='section'; card.style.marginBottom='10px';
+          const head = document.createElement('div'); head.className='head'; head.innerHTML = '<div style="font-weight:600">'+q.q+'</div>';
+          const body = document.createElement('div'); body.className='body';
+
+          const optsWrap = document.createElement('div'); optsWrap.className='radio-row';
+          q.opts.forEach(([val,label])=>{
+            const opt = document.createElement('label'); opt.className='radio-option';
+            const input = document.createElement('input'); input.type='radio'; input.name=q.id; input.value=val; input.checked = state.quiz[q.id]===val;
+            input.addEventListener('change',()=>{ state.quiz[q.id]=val; updateQuizLive(); });
+            const txt = document.createElement('div'); txt.innerHTML = '<div style="font-weight:600">'+label+'</div>';
+            opt.appendChild(input); opt.appendChild(txt); optsWrap.appendChild(opt);
+          });
+
+          body.appendChild(optsWrap); card.appendChild(head); card.appendChild(body); area.appendChild(card);
+        });
+        updateQuizLive();
+      }
+
+      function scoreQuiz(){
+        const totals = Object.fromEntries(ALL_TYPES.map(k=>[k,0]));
+        let answered=0; for(const [q,a] of Object.entries(state.quiz)){ if(!a) continue; answered++; const pts=QUIZ_POINTS[a]||{}; for(const [type,p] of Object.entries(pts)) totals[type]+=p }
+        const sum = Object.values(totals).reduce((s,v)=>s+v,0); const max = Math.max(...Object.values(totals)); const winners = ALL_TYPES.filter(t=>totals[t]===max && max>0); let finalLabel = winners[0]||null; if(winners.length>=2) finalLabel='Balanced'; const confidence = sum>0? Math.round((max/sum)*100):0; const suggested = confidence<60? 'Balanced': finalLabel; return {totals,sum,max,winners,finalLabel,confidence,suggested,answered};
+      }
+
+      function updateQuizLive(){
+        const r = scoreQuiz();
+        el('#quizLiveResult').innerText = 'Live result: ' + (r.suggested||'—') + ' ('+r.confidence+'% confidence)';
+        el('#answeredCount').innerText = r.answered + '/6 answered';
+      }
+
+      // summary build
+      function buildSummary(){
+        const r = scoreQuiz();
+        el('#summary-persona-type').innerText = r.suggested || '—';
+        el('#summary-confidence').innerText = r.confidence + '%';
+        const ul = el('#summary-scores'); ul.innerHTML=''; ALL_TYPES.forEach(t=>{ const li=document.createElement('li'); li.innerText = t+': '+r.totals[t]; ul.appendChild(li)});
+
+        el('#summary-course-name').innerText = state.course.name || '—';
+        el('#summary-course-credits').innerText = state.course.credits || '—';
+        const prefsTxt = [];
+        const enabledTimes = Object.entries(state.prefs.times).filter(([,v])=>v).map(([k])=>k);
+        prefsTxt.push('Preferred Times: '+(enabledTimes.length?enabledTimes.join(', '):'—'));
+        prefsTxt.push('Session: '+state.prefs.session+' minutes');
+        prefsTxt.push('Learning Style: '+state.prefs.style);
+        prefsTxt.push('AI Alerts: '+(state.prefs.aiAlerts?'Enabled':'Disabled'));
+        el('#summary-prefs-list').innerText = prefsTxt.join('\n');
+      }
+
+      function appendPersonaAndBusyToReferences(){
+        const r = scoreQuiz();
+        const personaText = '\n\n— Persona Result —\nFinal: '+ (r.suggested||'—') +' ('+r.confidence+'% confidence)\nScores → '+ ALL_TYPES.map(t=>t+':'+r.totals[t]).join(', ');
+        const busyKeys = Object.keys(state.busySlots).filter(k=>state.busySlots[k]);
+        let busyText='\n\n— Busy Slots —\n'+(busyKeys.length? busyKeys.map(k=>{ const [d,h]=k.split('-'); return d+': '+h+':00' }).join('; '):'No busy slots set.');
+        if(!state.prefs.references.includes('— Persona Result —')) state.prefs.references += personaText + busyText;
+      }
+
+      // wire up buttons & inputs
+      el('#next1').addEventListener('click',()=>{
+        state.course.name = el('#courseName').value; state.course.credits = el('#courseCredits').value; state.course.midterm = el('#midtermDate').value; state.course.final = el('#finalDate').value; setStep(2);
+      });
+      el('#prev2').addEventListener('click',()=>setStep(1));
+      el('#next2').addEventListener('click',()=>{
+        state.goals.target = el('#targetGrade').value; state.goals.skills = el('#skillAcq').value; setStep(3);
+      });
+      el('#prev3').addEventListener('click',()=>setStep(2));
+
+      // pills for preferred times
+      els('.pill').forEach(p=>{ p.addEventListener('click',()=>{ const key = p.dataset.key; state.prefs.times[key]=!state.prefs.times[key]; p.classList.toggle('active'); }) });
+      // session radios
+      els('input[name="session"]').forEach(r=>r.addEventListener('change',()=>state.prefs.session = r.value));
+      // hours range
+      el('#hoursRange').addEventListener('input',(e)=>{ state.prefs.hours = e.target.value; el('#hoursValue').innerText = state.prefs.hours + ' hrs'; });
+      // learning style
+      el('#learningStyle').addEventListener('change',(e)=>state.prefs.style = e.target.value);
+      // ai alerts
+      el('#aiAlerts').addEventListener('change',(e)=>state.prefs.aiAlerts = e.target.checked);
+      // references
+      el('#studyReferences').addEventListener('input',(e)=>state.prefs.references = e.target.value);
+
+      // generate quiz + timetable initial
+      renderTimetable(); renderQuiz(); setStep(1);
+
+      // generate action
+      el('#generateBtn').addEventListener('click',()=>{
+        // ensure quiz state updated from radio inputs
+        QUESTIONS.forEach(q=>{ const v = document.querySelector('input[name="'+q.id+'"]:checked'); state.quiz[q.id] = v? v.value : state.quiz[q.id]; });
+        // build summary
+        appendPersonaAndBusyToReferences();
+        buildSummary();
+        el('#summaryArea').style.display='block';
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+
+      // live quiz updates when radios change (delegation)
+      document.addEventListener('change', (e)=>{ if(e.target && e.target.name && e.target.name.startsWith('Q')){ state.quiz[e.target.name]=e.target.value; updateQuizLive(); } });
+
+      // expose small debug
+      window._wizardState = state;
+
+    })();
+  </script>
 </body>
 </html>
