@@ -18,3 +18,28 @@ npm test
 ```
 
 (Tests are placeholders and simply print a message.)
+
+Improving function: 
+- Add confirm  password
+- prevent number and special characters
+- preventing Midterm Exam must be the day before Final Exam (Example 15/08/2025 for Midterm then Final Exam must be after 15/08/2025)
+
+Login:
+- Password: More than 8 letters no special characters and less than 30
+- Username: using email must contain @
+
+Register:
+- First name and Last name: must not have numbers or any special characters
+- Username : check if there's any exist username already
+- Password: More than 8 letters no special characters and less than 30
+- Confirm Password: check if it's exact same with Password
+
+Function in Login & Register
+
+- small warning if there's wrong or missing when register or login 
+- appear each warning for each condition
+
+Backend:
+
+- Storing data for each user account
+- Check account if there's already exist
