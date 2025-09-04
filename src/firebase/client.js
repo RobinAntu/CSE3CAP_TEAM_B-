@@ -1,31 +1,31 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getStorage, connectStorageEmulator } from "firebase/storage";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  connectAuthEmulator,
+} from "firebase/auth";
 
-// Firebase configuration from environment variables
-const firebaseConfig = {
+const cfg = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(cfg);
+const auth = getAuth(app);
 
-// Set up services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+// Persist sessions across tabs/refresh
+setPersistence(auth, browserLocalPersistence);
 
-// Connect to emulators during development
-if (import.meta.env.DEV) {
-  connectAuthEmulator(auth, "http://localhost:9099");
-  connectFirestoreEmulator(db, "localhost", 8080);
-  connectStorageEmulator(storage, "localhost", 9199);
+// Connect to emulator only in dev AND when explicitly enabled
+if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === "true") {
+  const host = import.meta.env.VITE_EMU_AUTH || "http://127.0.0.1:9099";
+  connectAuthEmulator(auth, host, { disableWarnings: true });
 }
 
-export default app;
+export { app, auth };
+

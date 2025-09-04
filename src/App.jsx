@@ -1,20 +1,18 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./auth/AuthContext";
-import RequireAuth from "./auth/RequireAuth";
+import { AuthProvider, RequireAuth, useAuth } from "@/auth/AuthContext";
 import Page from "./components/layout/Page";
 import { AppProvider } from "./context/AppContext";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
-import WizardStep1 from "./pages/WizardStep1";
-import WizardStep2 from "./pages/WizardStep2";
-import WizardStep3 from "./pages/WizardStep3";
-import TaskDetails from "./pages/TaskDetails";
-import Schedule from "./pages/Schedule";
-import Progress from "./pages/progress/Progress";
-import { useAuth } from "./auth/AuthContext";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import Dashboard from "@/pages/Dashboard";
+import Settings from "@/pages/Settings";
+import WizardStep1 from "@/pages/WizardStep1";
+import WizardStep2 from "@/pages/WizardStep2";
+import WizardStep3 from "@/pages/WizardStep3";
+import TaskDetails from "@/pages/TaskDetails";
+import Schedule from "@/pages/Schedule";
+import Progress from "@/pages/progress/Progress";
 
 function DefaultRoute() {
   const { user } = useAuth();

@@ -1,54 +1,37 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "@/firebase/client";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
-const AuthContext = createContext();
-
-function loadUsers() {
-  try {
-    return JSON.parse(localStorage.getItem("sf_users")) || [];
-  } catch {
-    return [];
-  }
-}
+const AuthCtx = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("sf_user");
-    if (stored) setUser(JSON.parse(stored));
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u || null);
+      setReady(true);
+    });
+    return () => unsub();
   }, []);
 
-  const login = (email, password) => {
-    const users = loadUsers();
-    const found = users.find((u) => u.email === email && u.password === password);
-    if (found) {
-      setUser(found);
-      localStorage.setItem("sf_user", JSON.stringify(found));
-      return true;
-    }
-    return false;
-  };
-
-  const signup = (info) => {
-    const users = loadUsers();
-    if (users.some((u) => u.email === info.email)) return false;
-    users.push(info);
-    localStorage.setItem("sf_users", JSON.stringify(users));
-    return login(info.email, info.password);
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("sf_user");
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = { user, ready, logout: () => signOut(auth) };
+  return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>;
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
+export const useAuth = () => useContext(AuthCtx);
+
+// Route guards
+export function RequireAuth({ children }) {
+  const { user, ready } = useAuth();
+  if (!ready) return null; // or spinner
+  return user ? children : ((window.location.href = "/login"), null);
 }
+
+export function RedirectIfAuthed({ children }) {
+  const { user, ready } = useAuth();
+  if (!ready) return null;
+  return user ? ((window.location.href = "/dashboard"), null) : children;
+}
+

@@ -1,156 +1,89 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Card from "../components/ui/Card";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import Checkbox from "../components/ui/Checkbox";
-import { useAuth } from "../auth/AuthContext";
+import { useState } from "react";
+import { auth } from "@/firebase/client";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { isEmail, isPasswordOk } from "@/lib/validators";
+import { mapAuthError } from "@/lib/errors/authMap";
+import { RedirectIfAuthed } from "@/auth/AuthContext";
 
 export default function Signup() {
-  const { signup } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({
-    first: "",
-    last: "",
-    email: "",
-    password: "",
-    confirm: "",
-    agree: false,
-  });
-  const [errors, setErrors] = useState({
-    first: "",
-    last: "",
-    email: "",
-    password: "",
-    confirm: "",
-    agree: "",
-    general: "",
-  });
+  return (
+    <RedirectIfAuthed>
+      <SignupForm />
+    </RedirectIfAuthed>
+  );
+}
 
-  const handleSubmit = (e) => {
+function SignupForm() {
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    const nameRegex = /^[A-Za-z]{2,60}$/;
-    const passRegex = /^[A-Za-z]{9,29}$/;
-    let newErrors = { first: "", last: "", email: "", password: "", confirm: "", agree: "", general: "" };
-    if (!nameRegex.test(form.first)) newErrors.first = "Letters only (2-60)";
-    if (!nameRegex.test(form.last)) newErrors.last = "Letters only (2-60)";
-    if (!form.email.includes("@")) newErrors.email = "Email must include @";
-    if (!passRegex.test(form.password)) newErrors.password = "Password 9-29 letters";
-    if (form.confirm !== form.password) newErrors.confirm = "Passwords do not match";
-    if (!form.agree) newErrors.agree = "You must agree";
-    if (Object.values(newErrors).some(Boolean)) {
-      setErrors(newErrors);
-      return;
+    if (loading) return;
+    setErr("");
+    if (!isEmail(email)) return setErr("Please enter a valid email.");
+    if (!isPasswordOk(pw)) return setErr("Password must be 6–64 characters.");
+    try {
+      setLoading(true);
+      await createUserWithEmailAndPassword(auth, email.trim(), pw);
+      window.location.href = "/dashboard";
+    } catch (e) {
+      setErr(mapAuthError(e.code));
+    } finally {
+      setLoading(false);
     }
-    const ok = signup({
-      email: form.email,
-      password: form.password,
-      first: form.first,
-      last: form.last,
-    });
-    if (!ok) {
-      setErrors({ ...newErrors, general: "Username already exists" });
-      return;
-    }
-    navigate("/dashboard");
-  };
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f9fafb] p-4">
-      <Card className="w-full max-w-md space-y-6 p-8">
-        <h1 className="text-center text-2xl font-semibold">Sign up</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium">First name</label>
-              <Input
-                value={form.first}
-                onChange={(e) => setForm({ ...form, first: e.target.value })}
-                required
-              />
-              {errors.first && (
-                <p className="text-xs text-red-600 mt-1">{errors.first}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Last name</label>
-              <Input
-                value={form.last}
-                onChange={(e) => setForm({ ...form, last: e.target.value })}
-                required
-              />
-              {errors.last && (
-                <p className="text-xs text-red-600 mt-1">{errors.last}</p>
-              )}
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Email</label>
-            <Input
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
-            />
-            {errors.email && (
-              <p className="text-xs text-red-600 mt-1">{errors.email}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Password</label>
-            <Input
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-            />
-            {errors.password && (
-              <p className="text-xs text-red-600 mt-1">{errors.password}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Confirm Password</label>
-            <Input
-              type="password"
-              value={form.confirm}
-              onChange={(e) => setForm({ ...form, confirm: e.target.value })}
-              required
-            />
-            {errors.confirm && (
-              <p className="text-xs text-red-600 mt-1">{errors.confirm}</p>
-            )}
-          </div>
-          <label className="flex items-center space-x-2 text-sm">
-            <Checkbox
-              checked={form.agree}
-              onChange={(e) => setForm({ ...form, agree: e.target.checked })}
-            />
-            <span>By signing up, I agree with the Terms of Use & Privacy Policy</span>
-          </label>
-          {errors.agree && (
-            <p className="text-xs text-red-600">{errors.agree}</p>
-          )}
-          {errors.general && (
-            <p className="text-xs text-red-600">{errors.general}</p>
-          )}
-          <Button type="submit" className="w-full">
-            Sign up
-          </Button>
-        </form>
+    <div className="min-h-screen grid place-items-center bg-gray-50">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md bg-white rounded-2xl shadow p-6 space-y-4 border border-gray-200"
+      >
+        <h1 className="text-2xl font-semibold text-center">Sign up</h1>
+
+        <label className="block text-sm font-medium">
+          Email
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            required
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500/40"
+          />
+        </label>
+
+        <label className="block text-sm font-medium">
+          Password
+          <input
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            type="password"
+            required
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500/40"
+          />
+        </label>
+
+        {err && <p className="text-sm text-red-600">{err}</p>}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-11 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-60"
+        >
+          {loading ? "Creating…" : "Sign up"}
+        </button>
+
         <p className="text-center text-sm">
-          Already have an account? <Link to="/login" className="text-[#2563eb]">Log in</Link>
+          Already have an account?{" "}
+          <a className="text-blue-600 hover:underline" href="/login">
+            Log in
+          </a>
         </p>
-        <div className="flex items-center space-x-2">
-          <hr className="flex-1" />
-          <span className="text-xs text-gray-500">OR</span>
-          <hr className="flex-1" />
-        </div>
-        <div className="flex justify-center space-x-4">
-          <Button variant="secondary" className="rounded-full p-0 h-12 w-12">G</Button>
-          <Button variant="secondary" className="rounded-full p-0 h-12 w-12">F</Button>
-          <Button variant="secondary" className="rounded-full p-0 h-12 w-12"></Button>
-        </div>
-      </Card>
+      </form>
     </div>
   );
 }
+
