@@ -1,5 +1,4 @@
 import React from "react";
-import { ChartBarIcon, CheckCircleIcon, FireIcon, BoltIcon } from "@heroicons/react/24/outline";
 
 export default function StatsCards({ stats }) {
   const cards = [
@@ -7,25 +6,25 @@ export default function StatsCards({ stats }) {
       title: "Study time",
       value: `${Math.round(stats.studyMins / 60)}h ${stats.studyMins % 60}m`,
       subtitle: `Target ${(stats.targetMins / 60).toFixed(1)}h`,
-      icon: ChartBarIcon,
+      icon: "📊",
     },
     {
       title: "Tasks completed",
       value: stats.tasksCompleted,
       subtitle: `${stats.completionRate}% complete`,
-      icon: CheckCircleIcon,
+      icon: "✅",
     },
     {
       title: "Streak",
       value: `${stats.streak} days`,
       subtitle: "consecutive",
-      icon: FireIcon,
+      icon: "🔥",
     },
     {
       title: "Focus score",
       value: stats.focus,
       subtitle: "out of 100",
-      icon: BoltIcon,
+      icon: "⚡",
     },
   ];
   return (
@@ -40,7 +39,7 @@ export default function StatsCards({ stats }) {
             <div className="text-2xl font-semibold">{c.value}</div>
             <div className="text-xs text-gray-500">{c.subtitle}</div>
           </div>
-          <c.icon className="h-8 w-8 text-blue-600" />
+          <span className="text-2xl" aria-hidden="true">{c.icon}</span>
         </div>
       ))}
     </div>
