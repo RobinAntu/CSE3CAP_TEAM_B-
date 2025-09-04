@@ -6,7 +6,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo \"No tests\""
+    "test": "echo \"No tests\"",
+    "emulators": "firebase emulators:start",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "date-fns": "^2.30.0",
@@ -16,7 +18,8 @@
     "recharts": "^2.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.17.0",
+    "firebase": "^10.5.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
