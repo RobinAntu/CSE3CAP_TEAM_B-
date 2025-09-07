@@ -1,0 +1,28 @@
+:root {
+  --color-primary: #1d4ed8;
+  --color-primary-dark: #1e40af;
+  --color-bg: #f9fafb;
+  --color-muted: #6b7280;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #111827;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
