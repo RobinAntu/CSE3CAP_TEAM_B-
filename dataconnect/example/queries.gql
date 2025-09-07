@@ -15,7 +15,10 @@ query GetTasksForUser @auth(level: USER) {
 }
 
 mutation UpdateTask($taskId: UUID!, $isCompleted: Boolean!) @auth(level: USER) {
-  task_update(key: { id: $taskId }, data: { isCompleted: $isCompleted })
+  task_updateMany(
+    where: { id: { eq: $taskId }, userId: { eq_expr: "auth.uid" } },
+    data: { isCompleted: $isCompleted }
+  )
 }
 
 query ListSubjects @auth(level: USER) {

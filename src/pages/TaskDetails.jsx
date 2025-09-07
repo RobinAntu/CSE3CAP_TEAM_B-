@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { getFunctions, httpsCallable } from "firebase/functions";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Checkbox from "../components/ui/Checkbox";
@@ -7,6 +8,28 @@ import Badge from "../components/ui/Badge";
 
 export default function TaskDetails() {
   const { id } = useParams();
+  const [task, setTask] = useState(null);
+  const [suggestions, setSuggestions] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        const functions = getFunctions();
+        const getAISuggestions = httpsCallable(functions, 'getAISuggestions');
+        const result = await getAISuggestions({ 
+          prompt: `Give me some suggestions for how to complete the following task: ${id}`
+        });
+        setSuggestions(result.data.suggestions);
+      } catch (error) {
+        setError("Failed to fetch AI suggestions. Please try again later.");
+      }
+    };
+
+    fetchSuggestions();
+  }, [id]);
+
   return (
     <div className="space-y-6">
       <Link to="/dashboard" className="text-[#2563eb]">‹ Back to Dashboard</Link>
@@ -31,16 +54,17 @@ export default function TaskDetails() {
           </div>
         </div>
         <hr />
-        <p>
-          <strong>AI Prediction:</strong> Given your current pace, you are likely to complete this task on time.
-        </p>
         <div>
           <p className="font-medium">AI Suggestions for Improvement</p>
-          <ul className="list-disc pl-5 text-sm text-gray-600">
-            <li>Start early to avoid last-minute rush.</li>
-            <li>Break the task into smaller milestones for easier tracking.</li>
-            <li>Allocate specific time slots in your weekly schedule.</li>
-          </ul>
+          {loading && <p>Loading AI suggestions...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {suggestions && (
+            <ul className="list-disc pl-5 text-sm text-gray-600">
+              {suggestions.split('\n').map((suggestion, index) => (
+                <li key={index}>{suggestion}</li>
+              ))}
+            </ul>
+          )}
         </div>
         <div className="flex items-center justify-between pt-4">
           <Button variant="ghost">Edit Task</Button>
