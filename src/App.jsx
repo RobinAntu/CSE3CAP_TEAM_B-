@@ -6,6 +6,7 @@ import Page from "./components/layout/Page";
 import { AppProvider } from "./context/AppContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import WizardStep1 from "./pages/WizardStep1";
@@ -28,87 +29,88 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <RequireAuth>
-              <Page>
-                <Dashboard />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <RequireAuth>
-              <Page>
-                <Settings />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/schedule"
-          element={
-            <RequireAuth>
-              <Page>
-                <Schedule />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/progress"
-          element={
-            <RequireAuth>
-              <Page>
-                <Progress />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/wizard/1"
-          element={
-            <RequireAuth>
-              <Page>
-                <WizardStep1 />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/wizard/2"
-          element={
-            <RequireAuth>
-              <Page>
-                <WizardStep2 />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/wizard/3"
-          element={
-            <RequireAuth>
-              <Page>
-                <WizardStep3 />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/task/:id"
-          element={
-            <RequireAuth>
-              <Page>
-                <TaskDetails />
-              </Page>
-            </RequireAuth>
-          }
-        />
-        <Route path="/" element={<DefaultRoute />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Page>
+                  <Dashboard />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <Page>
+                  <Settings />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <RequireAuth>
+                <Page>
+                  <Schedule />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/progress"
+            element={
+              <RequireAuth>
+                <Page>
+                  <Progress />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/wizard/1"
+            element={
+              <RequireAuth>
+                <Page>
+                  <WizardStep1 />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/wizard/2"
+            element={
+              <RequireAuth>
+                <Page>
+                  <WizardStep2 />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/wizard/3"
+            element={
+              <RequireAuth>
+                <Page>
+                  <WizardStep3 />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/task/:id"
+            element={
+              <RequireAuth>
+                <Page>
+                  <TaskDetails />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route path="/" element={<DefaultRoute />} />
         </Routes>
       </AppProvider>
     </AuthProvider>

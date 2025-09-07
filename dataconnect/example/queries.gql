@@ -1,0 +1,26 @@
+mutation InsertUser @auth(level: USER) {
+  user_insert(data: { authId_expr: "auth.uid", email_expr: "auth.token.email", displayName: "New User" })
+}
+
+query GetTasksForUser @auth(level: USER) {
+  tasks(where: { userId: { eq_expr: "auth.uid" } }) {
+    id
+    title
+    description
+    dueDate
+    estimatedTime
+    isCompleted
+    priority
+  }
+}
+
+mutation UpdateTask($taskId: UUID!, $isCompleted: Boolean!) @auth(level: USER) {
+  task_update(key: { id: $taskId }, data: { isCompleted: $isCompleted })
+}
+
+query ListSubjects @auth(level: USER) {
+  subjects(where: { userId: { eq_expr: "auth.uid" } }) {
+    id
+    name
+  }
+}

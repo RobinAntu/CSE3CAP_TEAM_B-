@@ -1,0 +1,50 @@
+mutation SeedData @auth(level: USER) {
+  user_upsertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      authId: "someAuthId1",
+      email: "user1@example.com",
+      displayName: "User One",
+      createdAt: "2024-01-01T00:00:00Z"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      authId: "someAuthId2",
+      email: "user2@example.com",
+      displayName: "User Two",
+      createdAt: "2024-01-02T00:00:00Z"
+    }
+  ])
+  subject_upsertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Math"
+    },
+    {
+      id: "650e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Science"
+    }
+  ])
+  task_upsertMany(data: [
+    {
+      id: "750e8400-e29b-41d4-a716-446655440000",
+      subjectId: "650e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      title: "Algebra Homework",
+      dueDate: "2024-02-01T00:00:00Z",
+      estimatedTime: 60,
+      priority: "High"
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440001",
+      subjectId: "650e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      title: "Chemistry Lab Report",
+      dueDate: "2024-02-02T00:00:00Z",
+      estimatedTime: 90,
+      priority: "Medium"
+    }
+  ])
+}

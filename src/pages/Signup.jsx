@@ -1,21 +1,40 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import Checkbox from "../components/ui/Checkbox";
-import { useAuth } from "../auth/AuthContext";
+import { auth } from "../lib/firebase"; // Import auth from your firebase config
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 export default function Signup() {
-  const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ first: "", last: "", email: "", password: "", agree: false });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.email && form.password.length >= 6 && form.agree) {
-      login(form.email);
-      navigate("/dashboard");
+    setError("");
+    if (!form.agree) {
+      setError("You must agree to the terms of use and privacy policy.");
+      return;
+    }
+    if (form.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      await sendEmailVerification(userCredential.user);
+      alert("Verification email sent! Please check your inbox.");
+      navigate("/login");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,6 +42,7 @@ export default function Signup() {
     <div className="flex min-h-screen items-center justify-center bg-[#f9fafb] p-4">
       <Card className="w-full max-w-md space-y-6 p-8">
         <h1 className="text-center text-2xl font-semibold">Sign up</h1>
+        {error && <p className="text-red-500 text-sm">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -67,8 +87,8 @@ export default function Signup() {
             />
             <span>By signing up, I agree with the Terms of Use & Privacy Policy</span>
           </label>
-          <Button type="submit" className="w-full">
-            Sign up
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Signing up..." : "Sign up"}
           </Button>
         </form>
         <p className="text-center text-sm">

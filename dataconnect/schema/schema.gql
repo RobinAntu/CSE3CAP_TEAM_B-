@@ -1,0 +1,46 @@
+type User @table {
+  authId: String!
+  email: String!
+  createdAt: Timestamp!
+  displayName: String
+  timeZone: String
+  preferredSessionLength: Int
+  maxDailyStudyHours: Int
+  preferredStudyStartTime: String
+  preferredStudyEndTime: String
+}
+
+type Subject @table {
+  user: User!
+  name: String!
+  createdAt: Timestamp!
+}
+
+type Task @table {
+  user: User!
+  subject: Subject!
+  title: String!
+  dueDate: Timestamp!
+  priority: String!
+  estimatedTime: Int!
+  createdAt: Timestamp!
+  description: String
+  isCompleted: Boolean
+}
+
+type StudySession @table {
+  user: User!
+  task: Task
+  startTime: Timestamp!
+  endTime: Timestamp!
+  createdAt: Timestamp!
+  notes: String
+}
+
+type Schedule @table {
+  user: User!
+  startDate: Date!
+  endDate: Date!
+  createdAt: Timestamp!
+  generatedBy: String
+}

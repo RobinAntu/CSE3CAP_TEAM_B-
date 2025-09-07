@@ -1,75 +1,97 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../components/ui/Card";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../lib/firebase";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Login() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
-  const [show, setShow] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleForm = (e) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.email && form.password.length >= 6) {
-      login(form.email);
+    setError("");
+    setLoading(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+      if (!userCredential.user.emailVerified) {
+        setError("Please verify your email before logging in.");
+        return;
+      }
+      login(userCredential.user);
       navigate("/dashboard");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f9fafb] p-4">
-      <Card className="w-full max-w-md p-8 space-y-6">
-        <div className="mx-auto h-12 w-12 rounded bg-blue-500" aria-label="logo placeholder" />
-        <Link to="/login" className="block text-center text-[#2563eb]">
-          Study Flex
-        </Link>
-        <h1 className="text-center text-2xl font-semibold">Welcome Back</h1>
-        <p className="text-center text-gray-500">Login to your account</p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Email</label>
-            <Input
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Login to Your Account
+        </h1>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700">
+              Email Address
+            </label>
+            <input
               type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              name="email"
+              id="email"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              value={form.email}
+              onChange={handleForm}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Password</label>
-            <div className="relative">
-              <Input
-                type={show ? "text" : "password"}
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm"
-                onClick={() => setShow(!show)}
-              >
-                {show ? "Hide" : "Show"}
-              </button>
-            </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+              value={form.password}
+              onChange={handleForm}
+            />
           </div>
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
+          <button
+            type="submit"
+            className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
-        <div className="flex justify-between text-sm">
-          <Link to="#" className="text-[#2563eb]">
-            Forgot password?
+        <p className="mt-4 text-center text-gray-600">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-600 hover:underline">
+            Sign up
           </Link>
-          <Link to="/signup" className="text-[#2563eb]">
-            Don’t have an account? Sign up
-          </Link>
-        </div>
-        <p className="text-center text-xs text-gray-500">Made with Visily</p>
-      </Card>
+        </p>
+      </div>
     </div>
   );
 }
