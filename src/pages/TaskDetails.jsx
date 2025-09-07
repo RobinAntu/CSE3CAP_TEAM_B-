@@ -67,7 +67,9 @@ export default function TaskDetails() {
           )}
         </div>
         <div className="flex items-center justify-between pt-4">
-          <Button variant="ghost">Edit Task</Button>
+          <Link to={`/task/edit/${id}`}>
+            <Button variant="ghost">Edit Task</Button>
+          </Link>
           <label className="flex items-center space-x-2">
             <Checkbox /> <span>Mark as Complete</span>
           </label>

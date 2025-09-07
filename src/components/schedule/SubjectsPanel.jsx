@@ -10,7 +10,7 @@ export default function SubjectsPanel({ subjects, onAdd, onEdit, onDelete, onExp
     (s.code.toLowerCase().includes(search.toLowerCase()) || s.title.toLowerCase().includes(search.toLowerCase()))
   );
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold mb-4">Subjects</h2>
         <Input placeholder="Search subjects..." value={search} onChange={e=>setSearch(e.target.value)} className="w-full" />

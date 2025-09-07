@@ -7,7 +7,7 @@ import SessionEditorModal from "../components/schedule/SessionEditorModal";
 import SubjectFormModal from "../components/schedule/SubjectFormModal";
 import StatsBar from "../components/schedule/StatsBar";
 import Button from "../components/ui/Button";
-import { addDays, toMinutes } from "../lib/time";
+import { addDays, toMinutes, weekDays } from "../lib/time";
 import { downloadCSV } from "../lib/exporters/csv";
 import { downloadICS } from "../lib/exporters/ics";
 
@@ -69,6 +69,13 @@ export default function Schedule(){
       <div className="flex-1 p-4 overflow-auto">
         <WeekToolbar week={week} onPrev={()=>setWeek(addDays(week,-7))} onNext={()=>setWeek(addDays(week,7))} onToday={()=>setWeek(new Date())} subjectFilter={selectedSubjects} setSubjectFilter={setSelectedSubjects} kindFilter={kindFilter} setKindFilter={setKindFilter} timeFilter={timeFilter} setTimeFilter={setTimeFilter} subjectOptions={subjectOptions} />
         <StatsBar events={filteredEvents} subjects={courses} />
+        <div className="grid grid-cols-7">
+          {weekDays.map(day => (
+            <div key={day} className="text-center font-semibold text-gray-600 p-2 border-b">
+              {day}
+            </div>
+          ))}
+        </div>
         <WeekGrid events={filteredEvents} subjects={courses} />
         <div className="mt-4">
           <Button onClick={()=>{setEditingSession(null);setShowSessionForm(true);}}>Add session</Button>

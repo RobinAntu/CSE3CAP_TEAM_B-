@@ -15,6 +15,7 @@ const WizardStep1 = lazy(() => import("./pages/WizardStep1"));
 const WizardStep2 = lazy(() => import("./pages/WizardStep2"));
 const WizardStep3 = lazy(() => import("./pages/WizardStep3"));
 const TaskDetails = lazy(() => import("./pages/TaskDetails"));
+const EditTask = lazy(() => import("./pages/EditTask.jsx"));
 const Schedule = lazy(() => import("./pages/Schedule"));
 const Progress = lazy(() => import("./pages/progress/Progress"));
 
@@ -108,6 +109,16 @@ function App() {
                 <RequireAuth>
                   <Page>
                     <TaskDetails />
+                  </Page>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/task/edit/:id"
+              element={
+                <RequireAuth>
+                  <Page>
+                    <EditTask />
                   </Page>
                 </RequireAuth>
               }
