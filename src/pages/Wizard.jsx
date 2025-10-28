@@ -29,6 +29,9 @@ const Wizard = () => {
       } else if (data.tool === 'create_task') {
         addTask(data.arguments);
         setResponse(`A new task, ${data.arguments.title}, has been created for ${data.arguments.course_code}.`);
+      } else if (data.tool === 'add_task_to_subject') {
+        addTask(data.arguments);
+        setResponse(`A new task, ${data.arguments.title}, has been added to ${data.arguments.course_code}.`);
       } else if (data.tool === 'create_study_session') {
         addStudySession(data.arguments);
         const { start_time, end_time, task_title } = data.arguments;
@@ -36,7 +39,26 @@ const Wizard = () => {
         const endDate = new Date(end_time);
         setResponse(`A new study session for '${task_title}' has been scheduled on ${startDate.toLocaleDateString()} from ${startDate.toLocaleTimeString()} to ${endDate.toLocaleTimeString()}.`);
       } else {
-        setResponse(data.suggestions);
+        const suggestions = data.suggestions;
+        if (prompt.toLowerCase().includes('add subject') && suggestions && typeof suggestions === 'string') {
+          const parts = suggestions.split(':');
+          if (parts.length > 1) {
+            const course_code = parts[0].trim();
+            const rest = parts.slice(1).join(':');
+            const titleMatch = rest.match(/^\s*([^\-–—]+)/); // Match until a dash
+            if (titleMatch) {
+              const title = titleMatch[1].trim();
+              addSubject({ course_code, title });
+              setResponse(`A new subject, ${course_code}: ${title}, has been added to your schedule.`);
+            } else {
+              setResponse(suggestions);
+            }
+          } else {
+            setResponse(suggestions);
+          }
+        } else {
+          setResponse(suggestions);
+        }
       }
     } catch (error) { 
       console.error('Error fetching AI suggestions:', error);

@@ -199,21 +199,21 @@ export function AppProvider({ children }) {
   };
 
   const addStudySession = (session) => {
-    const course = courses.find((c) => c.code === session.course_code);
-    if (course) {
-        const task = tasks.find((t) => t.title === session.task_title && t.subjectId === course.id);
-        if(task) {
-          const newSession = {
-            id: `e${new Date().getTime()}`,
-            title: `Study: ${course.code}`,
-            day: new Date(session.start_time).toLocaleString('en-US', { weekday: 'short' }),
-            start: new Date(session.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-            end: new Date(session.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-            courseId: course.id,
-            kind: "study",
-          };
-          setEvents((prevEvents) => [...prevEvents, newSession]);
-        }
+    const task = tasks.find((t) => t.title.includes(session.task_title));
+    if (task) {
+      const course = courses.find((c) => c.id === task.subjectId);
+      if (course) {
+        const newSession = {
+          id: `e${new Date().getTime()}`,
+          title: `Study: ${task.title}`,
+          day: new Date(session.start_time).toLocaleString('en-US', { weekday: 'short' }),
+          start: new Date(session.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          end: new Date(session.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          courseId: course.id,
+          kind: "study",
+        };
+        setEvents((prevEvents) => [...prevEvents, newSession]);
+      }
     }
   };
 

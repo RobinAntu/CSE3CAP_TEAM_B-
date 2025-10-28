@@ -160,7 +160,32 @@ exports.getAISuggestions = onCall({ secrets: ["OPENAI_API_KEY"] }, async (reques
                 required: ["task_title", "course_code", "start_time", "end_time"],
               },
             },
-          }
+          },
+          {
+            type: "function",
+            function: {
+              name: "add_task_to_subject",
+              description: "Add a task to a subject",
+              parameters: {
+                type: "object",
+                properties: {
+                  course_code: {
+                    type: "string",
+                    description: "The course code of the subject to add the task to, e.g. CS101",
+                  },
+                  title: {
+                    type: "string",
+                    description: "The title of the task, e.g. 'Read Chapter 1'",
+                  },
+                  due_date: {
+                    type: "string",
+                    description: "The due date of the task, in ISO 8601 format",
+                  },
+                },
+                required: ["course_code", "title", "due_date"],
+              },
+            },
+          },
         ]
       });
 
@@ -196,6 +221,11 @@ exports.getAISuggestions = onCall({ secrets: ["OPENAI_API_KEY"] }, async (reques
             tool: "create_study_session",
             arguments: function_args,
           };
+        } else if (function_name === "add_task_to_subject") {
+            return {
+                tool: "add_task_to_subject",
+                arguments: function_args,
+            };
         }
       }
 

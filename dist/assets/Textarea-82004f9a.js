@@ -1,1 +1,0 @@
-import{j as e}from"./index-76c07c6a.js";function r({className:r="",...o}){return e.jsx("textarea",{className:`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500/40 focus:outline-none ${r}`,...o})}export{r as T};
