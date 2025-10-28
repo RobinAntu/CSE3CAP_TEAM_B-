@@ -135,10 +135,23 @@ export function AppProvider({ children }) {
       color: colors[Math.floor(Math.random() * colors.length)],
       active: true,
       weeklyTargetHours: 3,
-      fixedSlots: [],
+      fixedSlots: subject.fixed_slots || [],
       assessments: [],
     };
     setCourses((prevCourses) => [...prevCourses, newCourse]);
+
+    if (subject.fixed_slots) {
+        const newEvents = subject.fixed_slots.map(slot => ({
+            id: `e${new Date().getTime()}`,
+            title: slot.type,
+            day: slot.day,
+            start: slot.start_time,
+            end: slot.end_time,
+            courseId: newCourse.id,
+            kind: 'class',
+        }));
+        setEvents(prevEvents => [...prevEvents, ...newEvents]);
+    }
   };
 
   const addAssessment = (course_code, assessment) => {

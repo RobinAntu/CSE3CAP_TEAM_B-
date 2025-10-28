@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
+import useScheduler from "../hooks/useScheduler";
 import SubjectsPanel from "../components/schedule/SubjectsPanel";
 import WeekToolbar from "../components/schedule/WeekToolbar";
 import WeekGrid from "../components/schedule/WeekGrid";
@@ -13,6 +14,7 @@ import { downloadICS } from "../lib/exporters/ics";
 
 export default function Schedule(){
   const { courses, setCourses, events, setEvents } = useAppContext();
+  const { generateSchedule, isGenerating } = useScheduler();
   const [filter, setFilter] = useState("all");
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [kindFilter, setKindFilter] = useState({class:true, study:true});
@@ -24,6 +26,10 @@ export default function Schedule(){
   const [week, setWeek] = useState(new Date());
 
   const subjectOptions = courses.map(c=>({value:c.id,label:c.code}));
+
+  useEffect(() => {
+    // This will re-render the component when 'courses' change.
+  }, [courses]);
 
   function deleteSubject(id){
     if(!window.confirm("Delete subject and its sessions?")) return;
@@ -37,6 +43,7 @@ export default function Schedule(){
       setCourses(courses.map(c=> c.id===editingSubject.id ? {...editingSubject, ...data} : c));
     } else {
       setCourses([...courses, {id:crypto.randomUUID(), ...data}]);
+      console.log('courses', courses)
     }
     setShowSubjectForm(false);
   }
@@ -69,7 +76,8 @@ export default function Schedule(){
       <div className="flex-1 p-4 overflow-auto">
         <WeekToolbar week={week} onPrev={()=>setWeek(addDays(week,-7))} onNext={()=>setWeek(addDays(week,7))} onToday={()=>setWeek(new Date())} subjectFilter={selectedSubjects} setSubjectFilter={setSelectedSubjects} kindFilter={kindFilter} setKindFilter={setKindFilter} timeFilter={timeFilter} setTimeFilter={setTimeFilter} subjectOptions={subjectOptions} />
         <StatsBar events={filteredEvents} subjects={courses} />
-        <div className="grid grid-cols-7">
+        <div className="grid grid-cols-8">
+            <div className="col-span-1"></div>
           {weekDays.map(day => (
             <div key={day} className="text-center font-semibold text-gray-600 p-2 border-b">
               {day}
@@ -77,8 +85,11 @@ export default function Schedule(){
           ))}
         </div>
         <WeekGrid events={filteredEvents} subjects={courses} />
-        <div className="mt-4">
+        <div className="mt-4 flex space-x-2">
           <Button onClick={()=>{setEditingSession(null);setShowSessionForm(true);}}>Add session</Button>
+          <Button onClick={generateSchedule} disabled={isGenerating}>
+            {isGenerating ? 'Generating...' : 'Regenerate Schedule'}
+          </Button>
         </div>
       </div>
       {showSubjectForm && <SubjectFormModal initial={editingSubject} onSave={saveSubject} onClose={()=>setShowSubjectForm(false)} />}

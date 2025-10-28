@@ -6,6 +6,8 @@ import { useAppContext } from "../context/AppContext";
 import useScheduler from "../hooks/useScheduler";
 import Progress from "../components/Progress";
 import Alerts from "../components/Alerts";
+import AICoach from "../components/AICoach";
+import Gamification from "../components/Gamification";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -39,6 +41,9 @@ export default function Dashboard() {
             <Button variant="ghost" onClick={() => generateSchedule()}>Regenerate Schedule</Button>
           </div>
         </div>
+
+        <AICoach />
+        <Gamification />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
