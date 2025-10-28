@@ -6,7 +6,7 @@ StudyFlex is a simple student planner prototype built with React 18, Vite and Ta
 
 ```bash
 npm install
-npm run dev
+p
 ```
 
 The development server will start with Vite on port 5173.

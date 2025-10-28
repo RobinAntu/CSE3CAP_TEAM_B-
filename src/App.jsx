@@ -11,17 +11,15 @@ const Signup = lazy(() => import("./pages/Signup"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Settings = lazy(() => import("./pages/Settings"));
-const WizardStep1 = lazy(() => import("./pages/WizardStep1"));
-const WizardStep2 = lazy(() => import("./pages/WizardStep2"));
-const WizardStep3 = lazy(() => import("./pages/WizardStep3"));
 const TaskDetails = lazy(() => import("./pages/TaskDetails"));
 const EditTask = lazy(() => import("./pages/EditTask.jsx"));
 const Schedule = lazy(() => import("./pages/Schedule"));
 const Progress = lazy(() => import("./pages/progress/Progress"));
+const Wizard = lazy(() => import("./pages/Wizard"));
 
 function DefaultRoute() {
   const { user } = useAuth();
-  return <Navigate to={user ? "/dashboard" : "/login"} replace />;
+  return <Navigate to={user ? "/wizard" : "/login"} replace />;
 }
 
 function App() {
@@ -74,31 +72,11 @@ function App() {
               }
             />
             <Route
-              path="/wizard/1"
+              path="/wizard"
               element={
                 <RequireAuth>
                   <Page>
-                    <WizardStep1 />
-                  </Page>
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/wizard/2"
-              element={
-                <RequireAuth>
-                  <Page>
-                    <WizardStep2 />
-                  </Page>
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/wizard/3"
-              element={
-                <RequireAuth>
-                  <Page>
-                    <WizardStep3 />
+                    <Wizard />
                   </Page>
                 </RequireAuth>
               }

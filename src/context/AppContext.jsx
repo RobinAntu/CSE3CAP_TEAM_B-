@@ -125,8 +125,100 @@ export function AppProvider({ children }) {
     save("sf_data_v1", { courses, events, tasks, prefs });
   }, [courses, events, tasks, prefs]);
 
+  const addSubject = (subject) => {
+    const colors = ["#ef4444", "#10b981", "#f59e0b", "#3b82f6", "#6366f1", "#8b5cf6"];
+    const newCourse = {
+      id: `c${new Date().getTime()}`,
+      code: subject.course_code,
+      title: subject.title,
+      instructor: "TBD",
+      color: colors[Math.floor(Math.random() * colors.length)],
+      active: true,
+      weeklyTargetHours: 3,
+      fixedSlots: [],
+      assessments: [],
+    };
+    setCourses((prevCourses) => [...prevCourses, newCourse]);
+  };
+
+  const addAssessment = (course_code, assessment) => {
+    setCourses((prevCourses) =>
+      prevCourses.map((course) => {
+        if (course.code === course_code) {
+          const newAssessment = {
+            title: assessment.title,
+            deadlineISO: assessment.deadline,
+            estHours: 3, // default value
+            priority: "medium", // default value
+          };
+          return {
+            ...course,
+            assessments: [...course.assessments, newAssessment],
+          };
+        }
+        return course;
+      })
+    );
+  };
+
+  const addFixedSlot = (course_code, slot) => {
+    setCourses((prevCourses) =>
+      prevCourses.map((course) => {
+        if (course.code === course_code) {
+          const newSlot = {
+            type: slot.type,
+            day: slot.day,
+            start: slot.start_time,
+            end: slot.end_time,
+          };
+          return {
+            ...course,
+            fixedSlots: [...course.fixedSlots, newSlot],
+          };
+        }
+        return course;
+      })
+    );
+  };
+
+  const addTask = (task) => {
+    const course = courses.find((c) => c.code === task.course_code);
+    if (course) {
+      const newTask = {
+        id: `t${new Date().getTime()}`,
+        title: task.title,
+        subjectId: course.id,
+        dueISO: task.due_date,
+        priority: "medium", // default value
+        estimateHrs: 2, // default value
+        actualHrs: 0,
+        status: "backlog",
+      };
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    }
+  };
+
+  const addStudySession = (session) => {
+    const course = courses.find((c) => c.code === session.course_code);
+    if (course) {
+        const task = tasks.find((t) => t.title === session.task_title && t.subjectId === course.id);
+        if(task) {
+          const newSession = {
+            id: `e${new Date().getTime()}`,
+            title: `Study: ${course.code}`,
+            day: new Date(session.start_time).toLocaleString('en-US', { weekday: 'short' }),
+            start: new Date(session.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+            end: new Date(session.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+            courseId: course.id,
+            kind: "study",
+          };
+          setEvents((prevEvents) => [...prevEvents, newSession]);
+        }
+    }
+  };
+
   return (
-    <AppContext.Provider value={{ courses, setCourses, events, setEvents, tasks, setTasks, prefs, setPrefs }}>
+    <AppContext.Provider value={{ courses, setCourses, events, setEvents, tasks, setTasks, prefs, setPrefs, addSubject, addAssessment, addFixedSlot, addTask, addStudySession }}>
       {children}
     </AppContext.Provider>
   );

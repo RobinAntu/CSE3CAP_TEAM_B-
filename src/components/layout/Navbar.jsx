@@ -19,7 +19,7 @@ export default function Navbar() {
             <NavLink to="/dashboard" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Home</NavLink>
             <NavLink to="/schedule" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Schedule</NavLink>
             <NavLink to="/progress" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Progress</NavLink>
-            <NavLink to="/wizard/1" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Wizard</NavLink>
+            <NavLink to="/wizard" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Wizard</NavLink>
             <NavLink to="/settings" className={({isActive}) => isActive ? activeClassName : inactiveClassName}>Settings</NavLink>
           </div>
         </div>
