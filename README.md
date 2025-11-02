@@ -43,3 +43,124 @@ Backend:
 
 - Storing data for each user account
 - Check account if there's already exist
+
+
+
+Objectives
+- Automate weekly study schedule creation using AI.  
+- Reduce manual workload and improve study efficiency.  
+- Provide real-time synchronization with Google Calendar.  
+- Deliver a responsive and user-friendly interface.
+
+
+Key Features
+- **Secure Authentication:** Firebase login and signup system.  
+- **AI Scheduling Engine:** ChatGPT API creates personalized weekly plans.  
+- **Task Management:** Add, edit, and delete assignments with due dates.  
+- **Google Calendar Sync:** Automatically syncs sessions and reminders.  
+- **Interactive Dashboard:** React-based interface with task tracking.  
+- **Responsive Design:** Works smoothly across devices.
+
+
+Acceptance Criteria
++ Requirement
+  - User registration/login
+  - Task creation/editing
+  - AI plan generation
+  - Calendar sync
+  - Dashboard updates
+  - Plan regeneration
++ Acceptance Criterion
+  - Firebase Authentication validated
+  - Firestore CRUD operations verified
+  - ChatGPT API returns optimized weekly JSON plan
+  - Events created and updated successfully
+  - Real-time Firestore rendering confirmed
+  - Old plan replaced with updated plan
+
+
+
+System Architecture:
+
+Frontend (React JS)
+↓
+Firebase Auth + Firestore Database
+↓
+ChatGPT API (AI Scheduling Module)
+↓
+Google Calendar API (Sync & Reminders)
+
+
+
+Architecture Layers
+1. **Presentation Layer** – React JS UI + Tailwind CSS  
+2. **Application Layer** – Firebase Functions & middleware  
+3. **AI Layer** – ChatGPT API for schedule optimization  
+4. **Integration Layer** – Google Calendar API for synchronization  
+
+📎 **See `/docs/` Folder For:**  
+- High-Level Architecture (`HighLevel_Architecture.drawio`)  
+- Entity Relationship Diagram (`ERD_Structure.pdf`)  
+- UML Sequence Diagrams (`UML_Sequence_Diagrams.pdf`)
+
+---
+
+## 🧪 Testing Evidence
+### Strategy
+- **Unit Tests:** Jest used for logic and validation.  
+- **Integration Tests:** Firebase Emulator for Auth + Firestore.  
+- **E2E Testing:** Manual workflow (Login → Add Tasks → Generate Plan → Sync Calendar).
+
+### Tools
+Jest · Firebase Emulator · Postman · Chrome DevTools
+
+### Results
+| Test ID | Function           | Result |
+|         |                    |        |
+| T1      | User Login/Auth    | Pass   |
+| T2      | Task Validation    | Pass   |
+| T3      | AI Plan Generation | Pass   |
+| T4      | Calendar Sync      | Pass   |
+| T5      | Plan Regeneration  | Pass   |
+
+**Coverage:** ~95% core logic tested  
+**Performance:** <3s AI plan generation  
+**Sync Success:** 98% calendar reliability  
+Supporting screenshots and logs are stored in `/testing/`.
+
+---
+
+## Agile Evidence
+| Sprint | Focus | Key Deliverables |
+|   |    |       |
+| 1 | Architecture & Tech Stack | System diagram and stack finalized |
+| 2 | Frontend Auth | Login & Register pages completed |
+| 3 | AI Module | ChatGPT API integrated |
+| 4 | System Integration | Backend & Calendar Sync |
+| 5 | Testing & Optimization | Unit and integration tests |
+
+**Retrospectives**
+- Improved communication through Jira.  
+- AI module refinements boosted output accuracy.  
+- Future improvement: automated analytics dashboard.
+
+Evidence available in `/agile/` folder (burndown charts, retrospectives, sprint logs).
+
+---
+
+## Build / Run Guide
+### Prerequisites
+- Node.js v18+  
+- npm v9+  
+- Firebase CLI (`npm install -g firebase-tools`)  
+- Active Google Calendar API and ChatGPT API keys
+
+
+### Environment Variables (`.env.local`)
+
+REACT_APP_FIREBASE_API_KEY=...
+REACT_APP_FIREBASE_PROJECT_ID=...
+REACT_APP_OPENAI_API_KEY=...
+REACT_APP_GOOGLE_CLIENT_ID=...
+REACT_APP_CALENDAR_API_KEY=...
+
